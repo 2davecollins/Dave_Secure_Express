@@ -3,7 +3,8 @@ const express = require('express'),
   mongoose = require('mongoose'),
   passport = require('passport'),
   flash = require('connect-flash'),
-  session = require('express-session');
+  session = require('express-session'),
+  logger = require('express-log-mongo');
 
 const app = express();
 
@@ -18,6 +19,14 @@ mongoose
   .connect(db,{ useNewUrlParser: true })
   .then(() => console.log('MongoDB Connected'))
   .catch(err => console.log(err));
+
+// logger
+
+app.use(logger('tiny', {
+  url: 'mongodb://localhost:27017',
+  db: 'dblog',
+  collection: 'logs'
+}))
 
 // EJS
 app.use(expressLayouts);
@@ -52,6 +61,9 @@ app.use(function(req, res, next) {
 // Routes
 app.use('/', require('./routes/index.js'));
 app.use('/users', require('./routes/users.js'));
+app.use('/api', require('./routes/api.js'));
+
+
 
 const PORT = process.env.PORT || 5000;
 
