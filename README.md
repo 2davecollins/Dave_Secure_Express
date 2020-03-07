@@ -1,8 +1,8 @@
-# Node.js & Passport Login
+# Securing a Node Express Web Application 
 
-This is a user login and registration app using Node.js, Express, Passport, Mongoose, EJS and some other packages.
+This is a project for Securing a web application  as part of The NCI Masters Program
 
-### Version: 2.0.0
+### Version: 1.0.0
 
 ### Usage
 
@@ -12,12 +12,12 @@ $ npm install
 
 ```sh
 $ npm start
-# Or run with Nodemon
+# To Run with Nodemon
 $ npm run dev
 
-# Visit http://localhost:5000
+# Visit http://83.212.82.81:5000
 ```
 
 ### MongoDB
 
-Open "config/keys.js" and add your MongoDB URI, local or Atlas
+Open "config/keys.js" to setup MongoDB access

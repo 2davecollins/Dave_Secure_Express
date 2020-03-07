@@ -3,13 +3,14 @@
     <div class="card card-body">
       <h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i>  Login</h1>
       <% include ./partials/messages %>
-      <form action="/users/login" method="POST">
+      <form action="/users/login" method="POST" autocomplete="off">
         <div class="form-group">
           <label for="email">Email</label>
           <input
             type="email"
             id="email"
             name="email"
+            required
             class="form-control"
             placeholder="Enter Email"
           />
@@ -20,6 +21,7 @@
             type="password"
             id="password"
             name="password"
+            required
             class="form-control"
             placeholder="Enter Password"
           />

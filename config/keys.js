@@ -4,7 +4,7 @@
 //     mongoURI: dbPassword
 // };
 
-dbconnect = "mongodb://localhost:27017/postsdb";
+dbconnect = "mongodb://localhost:27017/usersdb";
 module.exports = {
     mongoURI: dbconnect
 };

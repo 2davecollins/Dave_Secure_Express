@@ -56,15 +56,11 @@ router.post('/register', (req, res) => {
   }
   if(owaspcheck.errors.length > 0){
     if(owaspcheck.failedTests.length > 0){
-      errors.push({msg: "OSWAP SAYS NOT Good Enough\n\t\t"+owaspcheck.errors[0]});
+      errors.push({msg: "OSWAP SAYS NO\n\t\t"+owaspcheck.errors[0]});
     }
    
   }
-
-  if (password.length < 6) {
-    errors.push({ msg: 'Password must be at least 6 characters' });
-  }
-
+  
   if (errors.length > 0) {
     res.render('register', {
       errors,
