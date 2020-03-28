@@ -1,3 +1,11 @@
 <h1 class="mt-4">Dashboard</h1>
 <p class="lead mb-3">Welcome <%= user.name %></p>
-<a href="/users/logout" class="btn btn-secondary">Logout</a>
+<p class="lead mb-3">Enter your comments below</p>
+<% include ./partials/messages %>
+<form action="/users/comment" method="POST" autocomplete="off">
+  <div class="form-group">    
+    <textarea id="postcomment" rows="4" cols="60"></textarea>
+  </div>
+  <button type="submit" class="btn btn-primary ">Post</button>
+  </div>
+</form>

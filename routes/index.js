@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+
+let loginstate = false;
 const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 
 // Welcome Page

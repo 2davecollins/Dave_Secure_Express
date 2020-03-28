@@ -3,9 +3,10 @@ const express = require('express'),
   mongoose = require('mongoose'),
   passport = require('passport'),
   flash = require('connect-flash'),
-  session = require('express-session'),
-  logger = require('express-log-mongo');
+  session = require('express-session');
 
+
+logger = require('./config/winston');
 const app = express();
 
 // Passport Config
@@ -22,18 +23,13 @@ mongoose
 
 // logger
 
-app.use(logger('tiny', {
-  url: 'mongodb://localhost:27017',
-  db: 'dblog',
-  collection: 'logs'
-}))
-
-// EJS
 app.use(expressLayouts);
 app.set('view engine', 'ejs');
 
 // Express body parser
 app.use(express.urlencoded({ extended: true }));
+
+
 
 // Express session
 app.use( session({
@@ -57,6 +53,7 @@ app.use(function(req, res, next) {
   res.locals.error = req.flash('error');
   next();
 });
+app.locals.loginstate = false;
 
 // Routes
 app.use('/', require('./routes/index.js'));
@@ -65,6 +62,10 @@ app.use('/api', require('./routes/api.js'));
 
 
 
+
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, console.log(`Server started on port ${PORT}`));
+app.listen(PORT, () =>{
+  console.log(`server startedon port ${PORT}`);
+  //logger.info(`Server started on port ${PORT}`);
+});
