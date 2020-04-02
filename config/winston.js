@@ -1,13 +1,15 @@
 
 const winston = require('winston')
-require('winston-mongodb')
+require('winston-mongodb');
+
 
 const logger = new winston.createLogger({
   transports: [
     new winston.transports.MongoDB({
-      db:'mongodb://localhost:27017/dblog',
+      db:'mongodb://expressUser:1expressUser@localhost:27717/dswp',
       collection:'apache',
       level:'info',
+      options:  { useUnifiedTopology: true },
       capped:true
     })
   ],

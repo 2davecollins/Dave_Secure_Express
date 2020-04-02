@@ -8,6 +8,8 @@ const https = require('https');
 const crypto = require('crypto');
 
 const { forwardAuthenticated } = require('../config/auth');
+
+// configure password requirements
 owasp.config({
   allowPassphrases       : false,
   maxLength              : 128,
@@ -23,7 +25,7 @@ const svgCaptcha = require('svg-captcha');
 
 router.get('/captcha', function (req, res) {
   var captcha = svgCaptcha.createMathExpr({
-    
+
     fontSize: 60,
     color:true,
     size: 1,  
@@ -34,24 +36,22 @@ router.get('/captcha', function (req, res) {
     mathMin: 1,
     mathMax: 4,    
     
-})
-  req.session.captcha = captcha.text;
-  
+  });
+
+  req.session.captcha = captcha.text;  
   res.type('svg');
   res.status(200).send(captcha.data);
 });
 
 // Login Page
 router.get('/login', forwardAuthenticated, (req, res) => {
- 
-  console.log("logged in");
+   console.log("logged in");
   res.render('login');
 });
 
 // Register Page
 router.get('/register', forwardAuthenticated, (req, res) => res.render('register'));
 
-// Register
 
 router.post('/register', (req, res) => {
   const { name, email, password, password2 } = req.body;

@@ -1,0 +1,22 @@
+<h1>Log Page</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+          <th scope="col">Level</th>
+          <th scope="col">Message</th>
+          <th scope="col">Time</th>        
+        </tr>
+      </thead>
+
+      <tbody>
+        <% for (var i = 0; i < loglist.length; i++) { %>
+            <tr>
+              <th scope="row"><%= loglist[i].level %></th>
+              <th><%= loglist[i].message %></th>
+              <th><%= new Date(loglist[i].timestamp).toUTCString() %></th>
+            </tr>    
+        <% } %>
+      </tbody>    
+ </table>
+

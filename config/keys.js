@@ -4,7 +4,12 @@
 //     mongoURI: dbPassword
 // };
 
-dbconnect = "mongodb://localhost:27017/usersdb";
+//dbconnect = "mongodb://localhost:27017/usersdb";
+dbconnect = 'mongodb://expressUser:1expressUser@localhost:27717/dswp';
+
+dblog = 'mongodb://expressUser:1expressUser@localhost:27717/dswp';
+
 module.exports = {
-    mongoURI: dbconnect
+    mongoURI: dbconnect,
+    mongoLOG: dblog
 };
