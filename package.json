@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "lint": "./node_modules/.bin/eslint app.js routes/**"
   },
   "keywords": [],
   "author": "",
@@ -31,6 +32,7 @@
     "winston-mongodb": "^5.0.1"
   },
   "devDependencies": {
+    "eslint": "^6.8.0",
     "nodemon": "^2.0.2"
   }
 }

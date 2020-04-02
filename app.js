@@ -3,10 +3,8 @@ const express = require('express'),
   mongoose = require('mongoose'),
   passport = require('passport'),
   flash = require('connect-flash'),
-  session = require('express-session');
-
-
-logger = require('./config/winston');
+  session = require('express-session'),
+  logger = require('./config/winston');
 
 //init app
 const app = express();
@@ -38,12 +36,7 @@ app.use(express.urlencoded({ extended: true }));
 
 
 // Express session
-app.use( session({
-    secret: 'secret',
-    resave: true,
-    saveUninitialized: true
-  })
-);
+app.use( session({ secret: 'secret', resave: true, saveUninitialized: true}));
 
 // Passport middleware
 app.use(passport.initialize());
@@ -66,7 +59,7 @@ app.locals.loginstate = false;
 app.use('/', require('./routes/index.js'));
 app.use('/users', require('./routes/users.js'));
 app.use('/public', require('./routes/public.js'));
-app.use('/admin', require('./routes/admin.js'))
+app.use('/admin', require('./routes/admin.js'));
 app.use('/api', require('./routes/api.js'));
 
 

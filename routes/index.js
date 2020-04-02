@@ -1,7 +1,7 @@
-const express = require('express');
-const multer = require('multer');
-const path = require('path');
-const router = express.Router();
+const express = require('express'),
+  multer = require('multer'),
+  path = require('path'),
+  router = express.Router();
 
 
 //file upload
@@ -54,7 +54,7 @@ router.get('/dashboard', ensureAuthenticated, (req, res) =>
 
 router.post('/dashboard', (req, res) =>{
 
-  console.log("post in dashboard");
+  console.log('post in dashboard');
   upload(req, res, (err) => {
     if(err){
       res.render('dashboard', {
@@ -62,7 +62,7 @@ router.post('/dashboard', (req, res) =>{
         user: req.user
       });
     } else {
-      console.log("in dash");
+      console.log('in dash');
       console.log(req.file);
       if(req.file == undefined){
         
@@ -90,6 +90,6 @@ router.post('/dashboard', (req, res) =>{
   });
  
 
-})
+});
 
 module.exports = router;

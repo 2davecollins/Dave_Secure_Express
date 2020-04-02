@@ -1,13 +1,12 @@
-const express = require('express');
-const router = express.Router();
-const bcrypt = require('bcryptjs');
-const passport = require('passport');
-const User = require('../models/User');
-const owasp = require('owasp-password-strength-test');
-const https = require('https');
-const crypto = require('crypto');
-
-const { forwardAuthenticated } = require('../config/auth');
+const express = require('express'),
+  router = express.Router(),
+  bcrypt = require('bcryptjs'),
+  passport = require('passport'),
+  User = require('../models/User'),
+  owasp = require('owasp-password-strength-test'),
+  https = require('https'),
+  crypto = require('crypto'),
+  { forwardAuthenticated } = require('../config/auth');
 
 // configure password requirements
 owasp.config({
@@ -45,7 +44,7 @@ router.get('/captcha', function (req, res) {
 
 // Login Page
 router.get('/login', forwardAuthenticated, (req, res) => {
-   console.log("logged in");
+  console.log('logged in');
   res.render('login');
 });
 
@@ -66,7 +65,7 @@ router.post('/register', (req, res) => {
   let apiCall = `https://api.pwnedpasswords.com/range/${prefix}`;
   let hashes = '';   
   let errors = [];
-  logger.info(`Logging new user registration ${name}`)
+  logger.info(`Logging new user registration ${name}`);
 
   https.get(apiCall, (r) => {
     r.setEncoding('utf8');
@@ -84,7 +83,7 @@ router.post('/register', (req, res) => {
       return {
         hash: prefix + sp[0],
         count: parseInt(sp[1])
-      }
+      };
     });
     let found = result.find((h) => h.hash === hashedPassword);
     if (found) {
@@ -103,7 +102,7 @@ router.post('/register', (req, res) => {
     }
     if(owaspcheck.errors.length > 0){
       if(owaspcheck.failedTests.length > 0){
-        errors.push({msg: "OSWAP SAYS NO\n\t\t"+owaspcheck.errors[0]});
+        errors.push({msg: 'OSWAP SAYS NO\n\t\t'+owaspcheck.errors[0]});
       }
      
     }
@@ -142,6 +141,7 @@ router.post('/register', (req, res) => {
               newUser
                 .save()
                 .then(user => {
+                  console.log(`user : ${user}`);
                   
                   req.flash(
                     'success_msg',
@@ -164,7 +164,7 @@ router.post('/login', (req, res, next) => {
   req.app.locals.loginstate = true;
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || (req.connection.socket ? req.connection.remoteAddress : null);
   const ipa = ip.split(':');
-  console.log(ipa[3])
+  console.log(ipa[3]);
   logger.log('info',` ${ipa[3]} is logging in`);
 
  

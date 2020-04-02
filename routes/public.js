@@ -1,9 +1,9 @@
-const express = require('express');
-const router = express.Router();
+const express = require('express'),
+  router = express.Router();
 
 router.get('/blog',  (req, res) => {
      
-    res.render('blog');
+  res.render('blog');
 });
 
 
