@@ -2,11 +2,12 @@
   "name": "node_passport_login",
   "version": "2.0.0",
   "description": "Node.js authentication with Passport",
+  "repository": {"type":"git", "url": "https://github.com/2davecollins/Dave_Secure_Express"},
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "lint": "./node_modules/.bin/eslint app.js routes/**"
+    "lint": "./node_modules/.bin/eslint app.js routes/**  config/** app.js"
   },
   "keywords": [],
   "author": "",

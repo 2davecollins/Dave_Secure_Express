@@ -5,11 +5,11 @@
 // };
 
 //dbconnect = "mongodb://localhost:27017/usersdb";
-dbconnect = 'mongodb://expressUser:1expressUser@localhost:27717/dswp';
+const dbconnect = 'mongodb://expressUser:1expressUser@localhost:27717/dswp';
 
-dblog = 'mongodb://expressUser:1expressUser@localhost:27717/dswp';
+const dblog = 'mongodb://expressUser:1expressUser@localhost:27717/dswp';
 
 module.exports = {
-    mongoURI: dbconnect,
-    mongoLOG: dblog
+  mongoURI: dbconnect,
+  mongoLOG: dblog
 };
