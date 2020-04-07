@@ -9,6 +9,12 @@
       rel="stylesheet"
       href="https://bootswatch.com/4/journal/bootstrap.min.css"
     />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+    crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+   integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+   crossorigin=""></script>
     <title>Dave' Secure Website</title>
   </head>
   <body>
@@ -20,6 +26,7 @@
         <a class="nav-link" href="#">Posts<span class="sr-only">(current)</span></a>
         
         <a class="nav-link" href="/public/blog">Blog</a>
+        <a class="nav-link" href="/map">Store Location</a>
         <% if(loginstate){ %>
             <a class="nav-link" href="/admin/logs">Logs</a>  
           <% } else{ %>  

@@ -1,0 +1,55 @@
+<h1>Stores Located Near You</h1>
+<div id="mapid" style="width: 600px; height: 400px;"></div>
+<div id="demo"></div>
+
+<script>
+	var x = document.getElementById('demo');
+	function getLocation() {
+        console.log("get geolocation")
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(showPosition);
+		} else {
+			x.innerHTML = 'Geolocation is not supported by this browser.';
+		}
+	}
+
+	function showPosition(position) {
+        console.log("showing position");
+		x.innerHTML = 'Latitude: ' + position.coords.latitude + '<br>Longitude: ' + position.coords.longitude;
+    }
+    getLocation()
+
+	const mymap = L.map('mapid', {
+		center: [53.3331,-6.2489],
+		minZoom: 3,
+		zoom: 13,
+		dragging: false,
+		doubleClickZoom: false,
+		scrollWheelZoom: false,
+	});
+
+	// var mymap = L.map('mapid').setView([51.505, -0.09], 13);
+
+	var osm = new L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+		attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+	});
+	osm.addTo(mymap);
+
+	//  L.tileLayer('http://*.*.*.*/hot/{z}/{x}/{y}.png', {
+	//              attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
+	//              maxZoom: 18
+	//            }).addTo(mymap);
+
+	L.marker([53.3331,-6.2489])
+		.addTo(mymap)
+		.bindPopup('<b>My Home</b><br />Starting Point')
+		.openPopup();
+
+	L.circle([53.3331,-6.2489], 2000, {
+		color: 'red',
+		fillColor: '#f03',
+		fillOpacity: 0.05,
+	})
+		.addTo(mymap)
+		.bindPopup('I am a circle.');
+</script>

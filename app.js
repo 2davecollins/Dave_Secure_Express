@@ -60,6 +60,7 @@ app.use('/', require('./routes/index.js'));
 app.use('/users', require('./routes/users.js'));
 app.use('/public', require('./routes/public.js'));
 app.use('/admin', require('./routes/admin.js'));
+app.use('/map', require('./routes/map.js'))
 app.use('/api', require('./routes/api.js'));
 
 

@@ -2,12 +2,16 @@
   "name": "node_passport_login",
   "version": "2.0.0",
   "description": "Node.js authentication with Passport",
-  "repository": {"type":"git", "url": "https://github.com/2davecollins/Dave_Secure_Express"},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/2davecollins/Dave_Secure_Express"
+  },
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "lint": "./node_modules/.bin/eslint app.js routes/**  config/** app.js"
+    "lint": "./node_modules/.bin/eslint app.js routes/**  config/** app.js",
+    "map": "./node_modules/.bin/browserify ./routes/map.js -o public/js/webmap.js"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +26,7 @@
     "express-session": "^1.15.6",
     "express-winston": "^4.0.3",
     "haveibeenpwned": "^1.1.0",
+    "leaflet": "^1.6.0",
     "mongoose": "^5.7.5",
     "monk": "^7.1.2",
     "multer": "^1.4.2",
@@ -33,6 +38,7 @@
     "winston-mongodb": "^5.0.1"
   },
   "devDependencies": {
+    "browserify": "^16.5.1",
     "eslint": "^6.8.0",
     "nodemon": "^2.0.2"
   }
