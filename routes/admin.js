@@ -7,15 +7,24 @@ const monk = require('monk'),
 const express = require('express'),
 	router = express.Router();
 
+
 router.get('/logs', adminlogsAuthenticated, (req, res) => {
 	const collection = dblog.get('apache');
-	collection.find({}, {}, (err, docs) => {
-		if (err) {
-			console.log(err);
-			logger.log('warn', `mongodb logs error ${err}`);
-		}
-		res.render('logs', { loglist: docs });
-	});
+	const options = {
+		projection: { _id: 0 },
+		sort: { 'timestamp': -1 },
+	};
+	
+
+	collection
+		.find({}, options, (err, docs) => {
+			if (err) {
+				console.log(err);
+				logger.log('warn', `mongodb logs error ${err}`);
+			}
+			console.log(docs);
+			res.render('logs', { loglist: docs });
+		});
 });
 
 module.exports = router;

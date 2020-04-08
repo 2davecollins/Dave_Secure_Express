@@ -4,10 +4,14 @@ const express = require('express'),
 	passport = require('passport'),
 	flash = require('connect-flash'),
 	session = require('express-session'),
-	logger = require('./config/winston');
+	logger = require('./config/winston'),
+	http = require('http'),
+	https = require('https');
 
 //init app
 const app = express();
+
+const options = require('./config/local.js');
 
 // Passport Config
 require('./config/passport')(passport);
@@ -22,7 +26,6 @@ mongoose
 	.catch(err => console.log(err));
 
 // logger
-
 app.use(expressLayouts);
 app.set('view engine', 'ejs');
 
@@ -61,7 +64,12 @@ app.use('/api', require('./routes/api/locationdata.js'));
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-	console.log(`server startedon port ${PORT}`);
-	//logger.info(`Server started on port ${PORT}`);
-});
+// app.listen(PORT, () => {
+// 	console.log(`server startedon port ${PORT}`);
+// 	//logger.info(`Server started on port ${PORT}`);
+// });
+
+// needs to be run as sudo
+
+http.createServer(app).listen(80);
+https.createServer(options,app).listen(443)

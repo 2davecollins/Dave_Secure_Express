@@ -36,7 +36,7 @@
 				});
 			}
 		});
-	const home = [53.3331, -6.2489];
+	const home = [53.319517, -6.3091073];
 	const center = [53.291, -6.4382];
 	const msg = '<b>My Home</b><br />Starting Point';
 	const dist = 2000;
@@ -55,7 +55,8 @@
 	
 
 	addHomeMarker(home, msg);	
-	createMap(center);
+	//createMap(center);
+	createSecureMap(center);
 	addCircle(home, dist, distmsg);
 
 	function createMap(cntr) {
@@ -63,6 +64,13 @@
 			attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
 		});
 		osm.addTo(mymap);		
+	}
+
+	function createSecureMap(cntr){
+
+		const osms = new L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
+		}).addTo(mymap);
 	}
 
 	function addCircle(ctnr, dist, msg) {
