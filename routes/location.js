@@ -3,7 +3,9 @@ const express = require('express'),
 	path = require('path'),
 	router = express.Router();
 
-//file upload
+let loginstate = false;
+const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
+
 const storage = multer.diskStorage({
 	destination: './public/uploads/',
 	filename: function(req, file, cb) {
@@ -37,39 +39,39 @@ function checkFileType(file, cb) {
 	}
 }
 
-let loginstate = false;
-const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
-
-// Welcome Page
-router.get('/', forwardAuthenticated, (req, res) => res.render('welcome'));
-
-// Dashboard
-router.get('/dashboard', ensureAuthenticated, (req, res) =>
-	res.render('dashboard', {
+router.get('/', (req, res) =>
+	res.render('map', {
+		user: req.user,
+	})
+);
+router.get('/add_location', ensureAuthenticated, (req, res) =>
+	res.render('location', {
 		user: req.user,
 	})
 );
 
-router.post('/dashboard', (req, res) => {
-	console.log('post in dashboard');
+router.post('/add_location', ensureAuthenticated, (req, res) => {
+    console.log('post in location');
+   
 	upload(req, res, err => {
 		if (err) {
-			res.render('dashboard', {
+			res.render('location', {
 				msg: err,
-				user: req.user,
+                user: req.user,
+                file: req.file
 			});
 		} else {
-			console.log('in dash');
+			console.log('in location');
 			console.log(req.file);
 			if (req.file == undefined) {
-				res.render('dashboard', {
+				res.render('location', {
 					msg: 'Error: No File Selected!',
 					user: req.user,
 				});
 				req.flash('error_msg', 'No File Selected');
 			} else {
 				req.flash('success_msg', 'File uploaded');
-				res.render('dashboard', {
+				res.render('map', {
 					msg: 'File Uploaded!',
 					user: req.user,
 					file: `uploads/${req.file.filename}`,

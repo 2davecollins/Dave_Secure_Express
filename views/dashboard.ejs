@@ -1,20 +1,4 @@
 <h1 class="mt-4">Dashboard</h1>
 <p class="lead mb-3">Welcome <%= user.name %></p>
-<p class="lead mb-3">Enter your comments below</p>
 <% include ./partials/messages %>
-<%= typeof msg != 'undefined' ? msg : ' ' %>
-<form action="/dashboard" method="POST" enctype="multipart/form-data" autocomplete="off">
-  <div class="form-group">
-    <label for="postitle">Title</label>    
-    <input id="postitle" name="title"/>
-  </div>
-  <div class="form-group">    
-    <textarea id="postcomment" rows="4" cols="60"></textarea>
-  </div>
-  <div class="form-group">
-    <input type="file" name="myImage" />
-  </div>
-  
-  <button type="submit" class="btn btn-primary ">Post</button>
-  </div>
-</form>
+

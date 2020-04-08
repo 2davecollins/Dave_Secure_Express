@@ -10,6 +10,6 @@ const dbconnect = 'mongodb://expressUser:1expressUser@localhost:27717/dswp';
 const dblog = 'mongodb://expressUser:1expressUser@localhost:27717/dswp';
 
 module.exports = {
-  mongoURI: dbconnect,
-  mongoLOG: dblog
+	mongoURI: dbconnect,
+	mongoLOG: dblog,
 };

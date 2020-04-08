@@ -1,11 +1,16 @@
 <h1>Stores Located Near You</h1>
-<div id="mapid" style="width: 600px; height: 400px;"></div>
-<div id="demo"></div>
+<br />
+
+<br />
+<div id="mapid" style="width: 1000px; height: 500px;"></div>
+<br />
+<a class="btn btn-info" href="/location/add_location" role="button">Admin</a>
+<div id="loc"></div>
 
 <script>
-	var x = document.getElementById('demo');
+	var x = document.getElementById('loc');
 	function getLocation() {
-        console.log("get geolocation")
+		console.log('get geolocation');
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(showPosition);
 		} else {
@@ -14,13 +19,31 @@
 	}
 
 	function showPosition(position) {
-        console.log("showing position");
+		console.log('showing position');
 		x.innerHTML = 'Latitude: ' + position.coords.latitude + '<br>Longitude: ' + position.coords.longitude;
-    }
-    getLocation()
+	}
+	getLocation();
+	let m = [];
+	
+	fetch('/api/loc')
+		.then(response => {
+			return response.json();
+		})
+		.then(data => {
+			if (data.length > 0) {
+				data.forEach(m => {
+					addMarker(m);
+				});
+			}
+		});
+	const home = [53.3331, -6.2489];
+	const center = [53.291, -6.4382];
+	const msg = '<b>My Home</b><br />Starting Point';
+	const dist = 2000;
+	const distmsg = '2k';
 
 	const mymap = L.map('mapid', {
-		center: [53.3331,-6.2489],
+		center: home,
 		minZoom: 3,
 		zoom: 13,
 		dragging: false,
@@ -28,28 +51,46 @@
 		scrollWheelZoom: false,
 	});
 
-	// var mymap = L.map('mapid').setView([51.505, -0.09], 13);
+	
+	
 
-	var osm = new L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-		attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-	});
-	osm.addTo(mymap);
+	addHomeMarker(home, msg);	
+	createMap(center);
+	addCircle(home, dist, distmsg);
 
-	//  L.tileLayer('http://*.*.*.*/hot/{z}/{x}/{y}.png', {
-	//              attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
-	//              maxZoom: 18
-	//            }).addTo(mymap);
+	function createMap(cntr) {
+		const osm = new L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+			attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+		});
+		osm.addTo(mymap);		
+	}
 
-	L.marker([53.3331,-6.2489])
-		.addTo(mymap)
-		.bindPopup('<b>My Home</b><br />Starting Point')
-		.openPopup();
+	function addCircle(ctnr, dist, msg) {
+		L.circle(ctnr, dist, {
+			color: 'red',
+			fillColor: '#f03',
+			fillOpacity: 0.05,
+		})
+			.addTo(mymap)
+			.bindPopup(msg);
+	}
 
-	L.circle([53.3331,-6.2489], 2000, {
-		color: 'red',
-		fillColor: '#f03',
-		fillOpacity: 0.05,
-	})
-		.addTo(mymap)
-		.bindPopup('I am a circle.');
+	function addMarker(m) {
+		L.marker(m).addTo(mymap);
+	}
+
+	function addHomeMarker(m, msg) {
+		const greenIcon = new L.Icon({
+			iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+			shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+			iconSize: [25, 41],
+			iconAnchor: [12, 41],
+			popupAnchor: [1, -34],
+			shadowSize: [41, 41],
+		});
+		L.marker(m, { icon: greenIcon })
+			.addTo(mymap)
+			.bindPopup(msg)
+			.openPopup();
+	}
 </script>
