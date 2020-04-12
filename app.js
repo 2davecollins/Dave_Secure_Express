@@ -52,6 +52,8 @@ app.use(function(req, res, next) {
 });
 app.locals.loginstate = false;
 
+
+
 // Routes
 app.use('/', require('./routes/index.js'));
 app.use('/users', require('./routes/users.js'));
@@ -61,6 +63,13 @@ app.use('/location', require('./routes/location'));
 app.use('/map', require('./routes/map.js'));
 //app.use('/api', require('./routes/api.js'));
 app.use('/api', require('./routes/api/locationdata.js'));
+
+
+// error page not found
+
+app.use('/*',(req,res) =>{
+	res.status(404).render('404',{title:'Oooops sorry page not found . . . . ', image:'/images/error.jpeg'});
+});
 
 const PORT = process.env.PORT || 5000;
 
