@@ -20,33 +20,38 @@
   </head>
   <body>
     <header id="banner" class="body">
-      <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
-        <a class="navbar-brand">Dave's Secure Web Application</a> 
-        <a class="nav-link" href="/dashboard">Dashboard</span></a>     
-        
-        <a class="nav-link" href="#">Posts<span class="sr-only">(current)</span></a>
-        
-        <a class="nav-link" href="/public/blog">Blog</a>
-        <a class="nav-link" href="/location">Map</a>
-        <% if(loginstate){ %>
-            <a class="nav-link" href="/admin/logs">Logs</a>  
-          <% } else{ %>  
-           
-        <% } %>          
-       
-        <form class="form-inline">
-        
-          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-         
-          <button class="btn btn-secondary my-2 my-sm-0 " disabled type="submit">Search</button>
-          <% if(loginstate){ %>
-            &nbsp;<a href="/users/logout" class="btn btn-secondary"><i class="fas fa-sign-out-alt"></i>&nbsp;Logout</a>
-            <% } else{ %>  
-              &nbsp;<a href="/users/login" class="btn btn-secondary">Login&nbsp;<i class="fas fa-sign-in-alt"></i></a>
-          <% } %>         
-        </form>
-       
-      </nav>
+      <nav class="navbar navbar-expand-md navbar-light " style="background-color: #e3f2fd;">
+  
+        <a class="navbar-brand">Dave's Secure Web Application</a>
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav d-flex justify-content-end">                
+                <a class="nav-link" href="/dashboard">Dashboard</span></a>
+                <a class="nav-link" href="/public/blog">Blog</a>
+                <a class="nav-link" href="/location">Map</a>
+                <% if(loginstate){ %>
+                  <a class="nav-link" href="/admin/logs">Logs</a>  
+                <% } else{ %>  
+                 
+                <% } %>             
+            </div>
+            <div class="navbar-nav ml-auto">
+              <form class="form-inline">          
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">               
+                <button class="btn btn-secondary my-2 my-sm-0 " disabled type="submit">Search</button>                      
+              </form>  
+
+              <% if(loginstate){ %>
+                &nbsp;<a href="/users/logout" class="btn btn-secondary"><i class="fas fa-sign-out-alt"></i>&nbsp;Logout</a>
+              <% } else{ %>  
+                  &nbsp;<a href="/users/login" class="btn btn-secondary">Login&nbsp;<i class="fas fa-sign-in-alt"></i></a>
+              <% } %>  
+            </div>
+        </div>
+    </nav>
     
     </header>
     <div class="container"><%- body %></div>
