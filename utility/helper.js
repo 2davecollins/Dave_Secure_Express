@@ -1,33 +1,44 @@
-const exiftool = require('node-exiftool');
-const exiftoolBin = require('dist-exiftool');
+const exiftool = require('node-exiftool'),
+	exiftoolBin = require('dist-exiftool'),	
+	fs = require('fs'),
+	path = require('path'),
+	fetch = require('node-fetch');
 
-const fs = require('fs');
-const path = require('path');
+
 
 const ep = new exiftool.ExiftoolProcess(exiftoolBin);
 
 
 //convert gps degrees minutes seconds to decimal
 function ParseDMS(input) {
-    var parts = input.split(/[^\d\w\.]+/);    
-    var lat = ConvertDMSToDD(parts[0], parts[2], parts[3], parts[4]);
-    var lng = ConvertDMSToDD(parts[5], parts[7], parts[8], parts[9]);
+	var parts = input.split(/[^\d\w\.]+/);
+	var lat = ConvertDMSToDD(parts[0], parts[2], parts[3], parts[4]);
+	var lng = ConvertDMSToDD(parts[5], parts[7], parts[8], parts[9]);
 
-    return {
-        Latitude : lat,
-        Longitude: lng,
-        Position : lat + ',' + lng
-    }
+	return {
+		Latitude: lat,
+		Longitude: lng,
+		Position: lat + ',' + lng,
+	};
 }
-function ConvertDMSToDD(degrees, minutes, seconds, direction) {   
-    var dd = Number(degrees) + Number(minutes)/60 + Number(seconds)/(60*60);
+function ConvertDMSToDD(degrees, minutes, seconds, direction) {
+	var dd = Number(degrees) + Number(minutes) / 60 + Number(seconds) / (60 * 60);
 
-    if (direction == "S" || direction == "W") {
-        dd = dd * -1;
-    } // Don't do anything for N or E
-    return dd;
+	if (direction == 'S' || direction == 'W') {
+		dd = dd * -1;
+	} // Don't do anything for N or E
+	return dd;
 }
 
+function getAppdressFromIP(ip) {
+	return fetch(`http://free.ipwhois.io/json/${ip}`);
+}
+
+function getLatLonFromAddress(add) {
+	let url = `https://nominatim.openstreetmap.org/search?q=${add}&format=geojson`;
+	console.log(url)
+	return fetch(url).then(res => res.json());
+}
 
 module.exports = {
 	getImageMetaData: function(req, res, next) {
@@ -48,20 +59,19 @@ module.exports = {
 					if (result.data.length > 0) {
 						//console.log(res.data[0])
 						if (result.data[0].GPSPosition) {
-                            let geodata =ParseDMS(result.data[0].GPSPosition);
-                            res.locals.geo = geodata;
-                            next();
-							
+							let geodata = ParseDMS(result.data[0].GPSPosition);
+							res.locals.geo = geodata;
+							next();
 						} else {
-                            console.log('No GPSPosition');
-                            res.locals.geo = {msg:"No Data"};
-                            next();
+							console.log('No GPSPosition');
+							res.locals.geo = { msg: 'No Data' };
+							next();
 						}
 					}
 				} else {
-                    console.log('No metadata');
-                    res.locals.geo = {msg:"No Data"};
-                    next();
+					console.log('No metadata');
+					res.locals.geo = { msg: 'No Data' };
+					next();
 				}
 			})
 			.then(
@@ -73,11 +83,38 @@ module.exports = {
 		//req.flash('error_msg', 'Please log in to view that resource');
 		//res.redirect('/map');
 	},
-	getGeolocFromAddress: function(req, res, next) {
-        //console.log(req)
-        res.locals.msg1 = {'msg1':"Hello from helper"}
-        console.log("ih helper function");
-        next();
-		
+	
+	getGeoLocFromIp: async function(req, res, next) {
+		try {
+			const data = await getAppdressFromIP('83.71.10.255');
+			res.locals.geoipadd = await data.json();
+			next();
+		} catch (err) {
+			console.log(err);
+			next();
+		}
+	},
+	getAddressFromLatLng: async (req, res, next) => {
+		let result;
+		try {
+			result = geocoder.reverse({ lat: 53.3165322, lon: -6.3425318 });
+			res.locals.revaddress = result;
+		} catch (err) {
+			console.log(err);
+			next();
+		}
+	},
+	getGeocodeFromLatLng: async (req, res, next) => {
+		let result;
+		let address;
+		try {
+			address = '291+captains+road+crumlin+dublin+12';
+			result = await getLatLonFromAddress(address);
+			res.locals.geocode = result.features[0];
+			next();
+		} catch (err) {
+			console.log(err);
+			next();
+		}
 	},
 };

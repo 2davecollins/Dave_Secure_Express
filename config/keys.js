@@ -9,7 +9,13 @@ const dbconnect = 'mongodb://expressUser:1expressUser@localhost:27717/dswp';
 
 const dblog = 'mongodb://expressUser:1expressUser@localhost:27717/dswp';
 
+const geocoder_provider = 'mapquest';
+const geocoder_key = 'AVmgJm14dU0aU6q9';
+
 module.exports = {
 	mongoURI: dbconnect,
-	mongoLOG: dblog,
+	mongoLOG: dblog,	
+	GEOCODER_PROVIDER: geocoder_provider,
+	GEOCODER_KEY: geocoder_key
+
 };
