@@ -18,10 +18,12 @@ require('./config/passport')(passport);
 
 // DB Config
 const db = require('./config/keys').mongoURI;
-
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
 // Connect to MongoDB
 mongoose
-	.connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
+	.connect(db, { useNewUrlParser: true, useUnifiedTopology: true , useFindAndModify: false,useCreateIndex: true})
 	.then(() => console.log('MongoDB Connected'))
 	.catch(err => console.log(err));
 
@@ -61,11 +63,13 @@ app.use('/public', require('./routes/public.js'));
 app.use('/admin', require('./routes/admin.js'));
 app.use('/location', require('./routes/location'));
 app.use('/map', require('./routes/map.js'));
-//app.use('/api', require('./routes/api.js'));
+app.use('/log', require('./routes/log.js'));
 app.use('/api', require('./routes/api/locationdata.js'));
 
+app.use('/api/vi/stores', require('./routes/stores'));
 
-// error page not found
+
+// error and page not found to prevent stack trace
 
 app.use('/*',(req,res) =>{
 	res.status(404).render('404',{title:'Oooops sorry page not found . . . . ', image:'/images/error.jpeg'});

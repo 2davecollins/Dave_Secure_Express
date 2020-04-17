@@ -1,21 +1,21 @@
-<h1 class="mt-4">Add Shop to Map</h1>
+<h1 class="mt-4">Add Store to Map</h1>
 <p class="lead mb-3">Welcome <%= user.name %></p>
-<p class="lead mb-3">Enter Shop Details</p>
+<p class="lead mb-3">Enter Store Details</p>
 <% include ./partials/messages %>
 <%= typeof msg != 'undefined' ? msg : ' ' %>
 
 <form action="/location/add_location" method="POST" enctype="multipart/form-data" autocomplete="off">
   <div class="form-group">
-    <label for="postitle">Title</label>    
-    <input id="postitle" class="form-control" name="title"/>
+    <label for="postitle">Store Name</label>    
+    <input id="postitle" class="form-control" name="name"/>
   </div>
   <div class="form-group">
     <label for="postaddress">Address</label>    
     <textarea id="postaddress" class="form-control" rows="4" cols="60"></textarea>
   </div>
   <div class="form-check">
-    <input type="checkbox" class="form-check-input" id="athome">
-    <label class="form-check-label" for="athome">Take Details from Picture</label>
+    <input type="checkbox" class="form-check-input" id="frompicture">
+    <label class="form-check-label" for="frompicture">Take Details from Picture</label>
   </div>
   <div class="form-group">
     <label for="postitle">Upload Image</label>      
@@ -24,7 +24,7 @@
   </div>
   <img id="preview" src="/<%= typeof file != 'undefined' ? file: 'uploads/notfound.png' %>" alt="alt" height="500" width="505" class="img-thumbnail" />
   <br/>
-  <button type="submit" class="btn btn-primary ">Add Shop</button>
+  <button type="submit" class="btn btn-primary ">Add Store</button>
  
 </form>
 <br/>

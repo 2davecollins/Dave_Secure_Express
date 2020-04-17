@@ -7,8 +7,6 @@ const exiftool = require('node-exiftool'),
 
 
 const ep = new exiftool.ExiftoolProcess(exiftoolBin);
-
-
 //convert gps degrees minutes seconds to decimal
 function ParseDMS(input) {
 	var parts = input.split(/[^\d\w\.]+/);
@@ -34,20 +32,18 @@ function getAppdressFromIP(ip) {
 	return fetch(`http://free.ipwhois.io/json/${ip}`);
 }
 
-function getLatLonFromAddress(add) {
+function getLatLonFromAddr(add) {
 	let url = `https://nominatim.openstreetmap.org/search?q=${add}&format=geojson`;
-	console.log(url)
 	return fetch(url).then(res => res.json());
 }
 
 module.exports = {
-	getImageMetaData: function(req, res, next) {
+	getImageMetaData: image => (req, res, next) =>{
 		console.log(req);
 		if (req.isAuthenticated()) {
 			return next();
 		}
-
-		const PHOTO_PATH = path.join(__dirname, '../public/uploads/' + 'dunes.jpg');
+		const PHOTO_PATH = path.join(__dirname, `../public/uploads/${image}`);
 		console.log(PHOTO_PATH);
 		const rs = fs.createReadStream(PHOTO_PATH);
 		ep.open()
@@ -94,7 +90,7 @@ module.exports = {
 			next();
 		}
 	},
-	getAddressFromLatLng: async (req, res, next) => {
+	getAddFromLatLng: async (req, res, next) => {
 		let result;
 		try {
 			result = geocoder.reverse({ lat: 53.3165322, lon: -6.3425318 });
@@ -104,12 +100,12 @@ module.exports = {
 			next();
 		}
 	},
-	getGeocodeFromLatLng: async (req, res, next) => {
+	getLatLonFromAddress: async (req, res, next) => {
 		let result;
 		let address;
 		try {
 			address = '291+captains+road+crumlin+dublin+12';
-			result = await getLatLonFromAddress(address);
+			result = await getLatLonFromAddr(address);
 			res.locals.geocode = result.features[0];
 			next();
 		} catch (err) {
@@ -117,4 +113,7 @@ module.exports = {
 			next();
 		}
 	},
+	asyncHandler: fn => (req,res,next) => {
+		Promise.resolve(fn(req,res,next).catch(next));
+	}
 };

@@ -1,0 +1,25 @@
+[
+	{
+		
+		"name": "Admin Account",
+		"email": "admin@gmail.com",
+		"role": "user",
+        "password": "$2a$10$G4XP.eQ6QyJQh3qGBCXekOqSVXI6xW/zO7xCiOvk2inRhysDtV.xm"		
+    },
+    {
+        "name": "David Collins",
+        "email": "2davecollins@gmail.com",
+        "role": "user",
+        "password": "$2a$10$G4XP.eQ6QyJQh3qGBCXekOqSVXI6xW/zO7xCiOvk2inRhysDtV.xm"
+
+    },
+    {
+       
+        "name" : "Dave Collins",
+        "email" : "d@d.com",
+        "password" : "$2a$10$G4XP.eQ6QyJQh3qGBCXekOqSVXI6xW/zO7xCiOvk2inRhysDtV.xm"
+        
+    }
+
+	
+]

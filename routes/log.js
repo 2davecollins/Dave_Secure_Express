@@ -3,8 +3,8 @@ const express = require('express'),
 	logger = require('express-log-mongo'),
 	{ ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 
-// Logs
-router.get('/logs', ensureAuthenticated, (req, res) => {
+// Get all Logs sort descending order
+router.get('/', ensureAuthenticated, (req, res) => {
 	logger
 		.retrieveDB({
 			find: {},

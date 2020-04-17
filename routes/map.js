@@ -5,7 +5,7 @@ const express = require('express'),
 //getURLMap = () => 'https://tile.openweathermap.org/map/';
 
 const { getImageMetaData, getGeolocFromAddress,getGeoLocFromIp ,  getGeocodeFromLatLng} = require('../utility/helper');
-
+const { getAddressFromLatLng,getLatLonFromAddress } = require('../utility/geolocation');
 let markers = require('../models/_datamarkers')
 
 
@@ -25,16 +25,22 @@ router.get('/addressip', getGeoLocFromIp,(req,res) =>{
 });
 
 
-router.get('/geocode', getGeocodeFromLatLng,(req,res) =>{
-	let response = res.locals.geocode;
-	let {geometry} = response;
-	//console.log(geometry);
-	//console.log(geometry.coordinates);
-	let d = [geometry.coordinates[1],geometry.coordinates[0]]
-	console.log(d);
-	markers.push(d);
+router.get('/geocode',(req,res) =>{
 
-	res.render('map',{d:d})
+	// markers.push(d);
+	getLatLonFromAddress("300+captains+road+crumlin+dublin").then(data =>{
+		
+		const loc = [data.features[0].geometry.coordinates[1],data.features[0].geometry.coordinates[0]];
+		console.log(loc)
+		markers.push(loc);
+		res.render('map');
+		
+	}).catch(err =>{
+		console.log(err);
+		res.render('map');
+
+	});	
+
 });
 
 
