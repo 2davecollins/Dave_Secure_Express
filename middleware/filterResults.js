@@ -1,25 +1,17 @@
-const filterResults = (model, populate) => async (req, res, next) => {
+const filterResults = (model) => async (req, res, next) => {
 
-    console.log("in filtered Results");
     let query;
   
     // Copy req.query
-    const reqQuery = { ...req.query };
-    console.log(reqQuery);
+    const reqQuery = { ...req.query };    
     // Fields to exclude
-    const removeFields = ['select', 'sort', 'page', 'limit'];
-  
+    const removeFields = ['select', 'sort', 'page', 'limit'];  
     // Loop over removeFields and delete them from reqQuery
-    removeFields.forEach(param => delete reqQuery[param]);
-  
+    removeFields.forEach(param => delete reqQuery[param]);  
     // Create query string
-    let queryStr = JSON.stringify(reqQuery);
-  
+    let queryStr = JSON.stringify(reqQuery);  
     // Create operators ($gt, $gte, etc)
     queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g, match => `$${match}`);
-
-    console.log("------");
-    console.log(queryStr);
   
     // Finding resource
     query = model.find(JSON.parse(queryStr));
@@ -35,7 +27,7 @@ const filterResults = (model, populate) => async (req, res, next) => {
       const sortBy = req.query.sort.split(',').join(' ');
       query = query.sort(sortBy);
     } else {
-      query = query.sort('-createdAt');
+      query = query.sort('-createdOn');
     }
   
     // Pagination
@@ -47,10 +39,7 @@ const filterResults = (model, populate) => async (req, res, next) => {
   
     query = query.skip(startIndex).limit(limit);
   
-    if (populate) {
-      query = query.populate(populate);
-    }
-  
+    
     // Executing query
     const results = await query;
   
@@ -71,7 +60,7 @@ const filterResults = (model, populate) => async (req, res, next) => {
       };
     }
   
-    res.advancedResults = {
+    res.filteredResults = {
       success: true,
       count: results.length,
       pagination,

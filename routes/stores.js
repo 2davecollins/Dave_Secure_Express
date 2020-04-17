@@ -39,7 +39,7 @@ const filterResults = require('../middleware/filterResults');
 
 router
 	.route('/')
-	.get(filterResults(Store, ''), getStores)
+	.get(filterResults(Store),getStores)
 	.post(createStore);
 
 router

@@ -3,6 +3,7 @@ const express = require('express'),
 	mongoose = require('mongoose'),
 	passport = require('passport'),
 	flash = require('connect-flash'),
+	errorHandler = require('./middleware/errorResponse'),
 	session = require('express-session'),
 	logger = require('./config/winston'),
 	http = require('http'),
@@ -62,11 +63,15 @@ app.use('/users', require('./routes/users.js'));
 app.use('/public', require('./routes/public.js'));
 app.use('/admin', require('./routes/admin.js'));
 app.use('/location', require('./routes/location'));
+app.use('/storelocation', require('./routes/storelocations'));
 app.use('/map', require('./routes/map.js'));
 app.use('/log', require('./routes/log.js'));
 app.use('/api', require('./routes/api/locationdata.js'));
 
 app.use('/api/vi/stores', require('./routes/stores'));
+
+//use custom error handler
+app.use(errorHandler);
 
 
 // error and page not found to prevent stack trace

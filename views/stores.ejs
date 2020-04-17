@@ -1,0 +1,38 @@
+<h1>Store Locations</h1>
+<% include ./partials/messages %>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+          <th scope="col">id</th>
+          <th scope="col">name</th>
+          <th scope="col">road</th>
+          <th scope="col">county</th>
+          <th scope="col">country</th>
+          <th scope="col">Delete</th>      
+        </tr>
+      </thead>
+
+      <tbody>
+        <% for (var i = 0; i < storeList.length; i++) { %>
+            <tr>
+              <th><%= storeList[i]._id %></th>              
+              <th><%= storeList[i].name %></th>
+              <th><%= storeList[i].location.road %></th>            
+              <th><%= storeList[i].location.county %></th>
+              <th><%= storeList[i].location.country %></th>
+              <th>
+                <div style="float:left">
+                  <a class="btn btn-raised btn-danger" href="/storelocation/edit/<%= storeList[i]._id %>">Edit</a></td>                           
+                  <a class="btn btn-raised btn-danger" href="/storelocation/delete/<%= storeList[i]._id %>">Delete</a></td>
+                </div>
+              </th>           
+            </tr>    
+        <% } %>
+      </tbody>    
+ </table>
+
+ <script>
+    
+ 
+ </script>

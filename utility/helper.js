@@ -32,8 +32,8 @@ function getAppdressFromIP(ip) {
 	return fetch(`http://free.ipwhois.io/json/${ip}`);
 }
 
-function getLatLonFromAddr(add) {
-	let url = `https://nominatim.openstreetmap.org/search?q=${add}&format=geojson`;
+function getLatLonFromAddr(address) {
+	let url = `https://nominatim.openstreetmap.org/search?q=${address}&format=geojson`;
 	return fetch(url).then(res => res.json());
 }
 
@@ -103,8 +103,7 @@ module.exports = {
 	getLatLonFromAddress: async (req, res, next) => {
 		let result;
 		let address;
-		try {
-			address = '291+captains+road+crumlin+dublin+12';
+		try {			
 			result = await getLatLonFromAddr(address);
 			res.locals.geocode = result.features[0];
 			next();

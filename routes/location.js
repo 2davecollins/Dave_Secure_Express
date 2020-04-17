@@ -49,6 +49,10 @@ router.get('/add_location', ensureAuthenticated, (req, res) =>
 		user: req.user,
 	})
 );
+router.get('/show_stores',(req,res) => {
+
+	res.render('stores')
+})
 
 router.post('/add_location', ensureAuthenticated, (req, res) => {
     console.log('post in location');
@@ -71,10 +75,11 @@ router.post('/add_location', ensureAuthenticated, (req, res) => {
 				req.flash('error_msg', 'No File Selected');
 			} else {
 				req.flash('success_msg', 'File uploaded');
-				res.render('map', {
+				res.render('stores', {
 					msg: 'File Uploaded!',
 					user: req.user,
 					file: `uploads/${req.file.filename}`,
+					storeList:[{name:"dave",road:"captains road", county: "Dublin", country: "Ireland"}]
 				});
 			}
 		}

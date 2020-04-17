@@ -9,11 +9,20 @@ const { asyncHandler } = require('../utility/helper');
 // @desc      Get all Stores
 // @route     GET /api/v1/stores
 // @access    Public
+// exports.getStores = asyncHandler(async (req, res, next) => {
+	
+// 	const stores = await Store.find();
+// 	res.status(200).json({success:true,count:stores.length,data:stores});
+// 	//res.status(200).json(res.filteredResults);
+// });
+
 exports.getStores = asyncHandler(async (req, res, next) => {
-	console.log("get all stores");
-	console.log(res.filterResults);
-	res.status(200).json(res.filterResults);
+	
+	//res.status(200).json(res.filteredResults);
+	res.status(200).json(res.filteredResults);
 });
+
+
 
 // @desc      Get single Store
 // @route     GET /api/v1/stores/:id
@@ -24,10 +33,10 @@ exports.getStore = asyncHandler(async (req, res, next) => {
 	if (!store) {
 		return next(new ErrorResponse(`Store not found with id of ${req.params.id}`, 404));
 	}
-	console.log("in get single store");
-
 	res.status(200).json({ success: true, data: store });
 });
+
+
 
 // @desc      Create new Store
 // @route     POST /api/v1/stores
@@ -89,12 +98,6 @@ exports.deleteStore = asyncHandler(async (req, res, next) => {
 	if (!store) {
 		return next(new ErrorResponse(`Store not found with id of ${req.params.id}`, 404));
 	}
-
-	// Make sure user is store owner
-	// if (store.user.toString() !== req.user.id && req.user.role !== 'admin') {
-	// 	return next(new ErrorResponse(`User ${req.params.id} is not authorized to delete this bootcamp`, 401));
-	// }
-
 	store.remove();
 
 	res.status(200).json({ success: true, data: {} });
@@ -104,7 +107,7 @@ exports.deleteStore = asyncHandler(async (req, res, next) => {
 // @route     GET /api/v1/stores/radius/:zipcode/:distance
 // @access    Private
 exports.getStoresInRadius = asyncHandler(async (req, res, next) => {
-    //const { zipcode, distance } = req.params;
+    const { coord, distance } = req.params;
     console.log(req.parms);
 
 	// Get lat/lng from geocoder
@@ -115,7 +118,7 @@ exports.getStoresInRadius = asyncHandler(async (req, res, next) => {
 	// Calc radius using radians
 	// Divide dist by radius of Earth
 	// Earth Radius = 3,963 mi / 6,378 km
-	const radius = distance / 3963;
+	const radius = distance / 6378;
 
 	const stores = await Store.find({
 		location: { $geoWithin: { $centerSphere: [[lng, lat], radius] } },

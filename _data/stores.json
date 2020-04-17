@@ -1,13 +1,87 @@
 [
-    {
-          
+    {          
       "name": "Tescco",      
-      "address": "St Agnes road crumlin village"     
+      "address": "St Agnes road crumlin village",
+      "addedBy": "admin"    
     },
     {
       "name":"Dunnes Stores",
-      "address":"Ashleaf shopping center crumlin"
+      "address":"Ashleaf shopping center Crumlin",
+      "addedBy": "admin"
 
-    }
+    },
+    {          
+      "name": "Dunnes Stores",      
+      "address": "Frederick Street,Ashbourne,Co. Meath," ,
+      "addedBy": "admin"    
+  },
+  {          
+      "name": "Dunnes Stores",      
+      "address": "Blanchardstown Centre,Blanchardstown",
+      "addedBy": "admin"    
+  },
+  {          
+      "name": "Dunnes Stores",      
+      "address": "Newcastle Road,Lucan,",
+      "addedBy": "admin"   
+  },
+  {          
+    "name": "ALDI",      
+    "address": "Lower Rathmines Road",
+    "addedBy": "admin"   
+},
+ {          
+    "name": "ALDI",      
+    "address": "18 Hamilton Walk Ashtown Dublin",
+    "addedBy": "admin"   
+},
+ {          
+    "name": "ALDI",      
+    "address": "Terenure Road East Terenure, Dublin 6",
+    "addedBy": "admin"   
+},
+  
+{          
+    "name": "ALDI",      
+    "address": "Long Mile Road Drimnagh, Dublin",
+    "addedBy": "admin"   
+},
+
+{          
+    "name": "ALDI",      
+    "address": "Brews Hill, Navan Co Meath",
+    "addedBy": "admin"   
+},
+{          
+    "name": "ALDI",      
+    "address": "Jonathan Swift Street Trim Co Meath",
+    "addedBy": "admin"   
+},
+{          
+    "name": "ALDI",      
+    "address": "Ashbourne, Co Meath",
+    "addedBy": "admin"   
+},
+
+{          
+  "name": "ALDI",      
+  "address": "Newcastle Road,Lucan, Dublin",
+  "addedBy": "admin"   
+},
+{          
+    "name": "ALDI",      
+    "address": "Slane Road Drogheda, Co Louth",
+    "addedBy": "admin"   
+},
+{          
+    "name": "ALDI",      
+    "address": "Kilcock Road Maynooth Co Kildare",
+    "addedBy": "admin"   
+},
+{          
+    "name": "ALDI",      
+    "address": "Main Street Clonee, Co Meath",
+    "addedBy": "admin"   
+}
    
   ]

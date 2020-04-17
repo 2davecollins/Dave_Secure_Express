@@ -13,6 +13,17 @@ const StoreSchema = new mongoose.Schema({
 		type: String,
 		required: false,
 	},
+	createdOn: {
+		type: Date,
+		default: Date.now,
+	},
+	addedBy:{
+		type:String,
+		enum:['user','admin','editor'],
+		default: 'user',
+		required:[true, 'who added store']
+
+	},
 	location: {
 		//GeoJson Point
 		type: {
@@ -32,28 +43,35 @@ const StoreSchema = new mongoose.Schema({
 });
 
 StoreSchema.pre('save', async function(next) {
+	// get coords from address
 	const data = await getLatLonFromAddress(this.address);
-    const loc = data.features[0];
-  
-	const coord = {
-		latitude: parseFloat(loc.geometry.coordinates[1]),
-		longtitude: parseFloat(loc.geometry.coordinates[0]),
-    };
-    console.log(coord);
+	const loc = data.features[0];
+	
+	if(loc){
+		const coord = {
+			latitude: parseFloat(loc.geometry.coordinates[1]),
+			longtitude: parseFloat(loc.geometry.coordinates[0]),
+		};		
+		// get address from coords
+		let faddress = await getAddressFromLatLng(coord);
+		faddress = faddress.features[0].properties.address;
+		this.location = {
+			type: 'Point',
+			coordinates: [loc.geometry.coordinates[1], loc.geometry.coordinates[0]],
+			// formattedAddress: faddress.properties.formattedAddress,
+			 road: faddress.road,
+			 city: faddress.city,
+			 county: faddress.county,
+			 country: faddress.country,
+			 country_code: faddress.countryCode
+		};
+				
+	}else{
+		console.log("data not available for "+this.address);
+	}
+	
+    
 
-	let faddress = await getAddressFromLatLng(coord);
-	faddress = faddress.features[0].properties.address;
-
-	this.location = {
-		type: 'Point',
-		coordinates: [loc.geometry.coordinates[1], loc.geometry.coordinates[0]],
-		// formattedAddress: faddress.properties.formattedAddress,
-		 road: faddress.road,
-		 city: faddress.city,
-		 county: faddress.county,
-		 country: faddress.country,
-		 country_code: faddress.countryCode
-	};
 
 	next();
 });
