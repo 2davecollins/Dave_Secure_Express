@@ -41,30 +41,36 @@ function checkFileType(file, cb) {
 	}
 }
 
-router.get('/', (req, res) =>
+router.get('/', (req, res) => {
+	console.log(">>>>>>>>>>>>>>>...")
+	console.log(req.user)
 	res.render('map', {
 		user: req.user,
-	})
-);
+	});
+});
+
+
 router.get('/add_location', ensureAuthenticated, (req, res) =>
 	res.render('location', {
 		user: req.user,
 	})
 );
-router.get('/show_stores',(req,res) => {
+router.get('/show_stores', (req, res) => {
+	console.log('>>>>>>>>>>>>>>>...');
+	console.log(req);
 
-	res.render('stores')
-})
+	res.render('stores');
+});
 
 router.post('/add_location', ensureAuthenticated, (req, res) => {
-    console.log('post in location');
-   
+	console.log('post in location');
+
 	upload(req, res, err => {
 		if (err) {
 			res.render('location', {
 				msg: err,
-                user: req.user,
-                file: req.file
+				user: req.user,
+				file: req.file,
 			});
 		} else {
 			console.log('in location');
@@ -81,7 +87,7 @@ router.post('/add_location', ensureAuthenticated, (req, res) => {
 					msg: 'File Uploaded!',
 					user: req.user,
 					file: `uploads/${req.file.filename}`,
-					storeList:[{name:"dave",road:"captains road", county: "Dublin", country: "Ireland"}]
+					storeList: [{ name: 'dave', road: 'captains road', county: 'Dublin', country: 'Ireland' }],
 				});
 			}
 		}

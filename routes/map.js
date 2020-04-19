@@ -17,9 +17,9 @@ router.get('/', getImageMetaData,(req, res) => {
 
 router.get('/addressip', getGeoLocFromIp,(req,res) =>{
 	const result = res.locals.geoipadd
-	console.log(result);
+	//console.log(result);
 	let d = [parseFloat(result.latitude),parseFloat(result.longitude)]
-	console.log(d);
+	//console.log(d);
 	markers.push(d);
 	res.render('map')
 });

@@ -68,9 +68,10 @@ app.use('/location', require('./routes/location'));
 app.use('/storelocation', require('./routes/storelocations'));
 app.use('/map', require('./routes/map.js'));
 app.use('/log', require('./routes/log.js'));
-app.use('/api', require('./routes/api/locationdata.js'));
+//app.use('/api', require('./routes/api/locationdata.js'));
 
-app.use('/api/vi/stores', require('./routes/stores'));
+app.use('/api/vi/stores', require('./routes/api/stores'));
+app.use('/api/vi/users', require('./routes/api/users'))
 
 //use custom error handler
 app.use(errorHandler);

@@ -1,8 +1,7 @@
-const path = require('path'),
-    ErrorResponse = require('../utility/errorResponse'),    
-    Store = require('../models/Store');
-
-
+const path = require('path'),        
+	Store = require('../models/Store');
+	
+const { ErrorResponse } = require('../utility/errorResponse');
 const { asyncHandler } = require('../utility/helper');
     
 
@@ -76,8 +75,8 @@ exports.updateStore = asyncHandler(async (req, res, next) => {
 		return next(new ErrorResponse(`Store not found with id of ${req.params.id}`, 404));
 	}
 
-	// // Make sure user is bootcamp owner
-	// if (bootcamp.user.toString() !== req.user.id && req.user.role !== 'admin') {
+	// // Make sure user is store owner
+	// if (store.user.toString() !== req.user.id && req.user.role !== 'admin') {
 	// 	return next(new ErrorResponse(`User ${req.params.id} is not authorized to update this bootcamp`, 401));
 	// }
 
@@ -126,8 +125,8 @@ exports.getStoresInRadius = asyncHandler(async (req, res, next) => {
 
 	res.status(200).json({
 		success: true,
-		count: bootcamps.length,
-		data: bootcamps,
+		count: stores.length,
+		data: stores,
 	});
 });
 
@@ -140,9 +139,10 @@ exports.storePhotoUpload = asyncHandler(async (req, res, next) => {
 	if (!store) {
 		return next(new ErrorResponse(`Store not found with id of ${req.params.id}`, 404));
 	}
+	//TODO
 
-	// // Make sure user is bootcamp owner
-	// if (bootcamp.user.toString() !== req.user.id && req.user.role !== 'admin') {
+	// // Make sure user is store creater
+	// if (store.user.toString() !== req.user.id && req.user.role !== 'admin') {
 	// 	return next(new ErrorResponse(`User ${req.params.id} is not authorized to update this bootcamp`, 401));
 	// }
 

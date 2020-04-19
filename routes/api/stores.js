@@ -8,13 +8,13 @@ const {
 	deleteStore,
 	getStoresInRadius,
 	StorePhotoUpload,
-} = require('../Controllers/stores');
+} = require('../../Controllers/stores');
 
-const Store = require('../models/Store');
+const Store = require('../../models/Store');
 
 const router = express.Router();
 
-const filterResults = require('../middleware/filterResults');
+const filterResults = require('../../middleware/filterResults');
 
 // router.use('/:bootcampId/courses', courseRouter);
 // router.use('/:bootcampId/reviews', reviewRouter);

@@ -8,10 +8,13 @@
 <br />
 <a class="btn btn-info" href="/location/add_location" role="button">Admin</a>
 <div id="loc"></div>
-
+<input type="hidden" id="loginid" value="<%= typeof user != 'undefined' ? user._id: ' ' %>">
 
 <script>
-	var x = document.getElementById('loc');
+	//Use API to get markers for stores
+
+
+	const x = document.getElementById('loc');
 	function getLocation() {
 		console.log('get geolocation');
 		if (navigator.geolocation) {
@@ -20,22 +23,44 @@
 			x.innerHTML = 'Geolocation is not supported by this browser.';
 		}
 	}
+	getLocation();
 
 	function showPosition(position) {
 		console.log('showing position');
 		x.innerHTML = 'Latitude: ' + position.coords.latitude + '<br>Longitude: ' + position.coords.longitude;
 	}
-	getLocation();
-	let m = [];
+	const id = document.getElementById('loginid').value
 	
-	fetch('/api/loc')
+	fetch(`/api/vi/users/${id}`)
 		.then(response => {
 			return response.json();
 		})
-		.then(data => {
-			if (data.length > 0) {
-				data.forEach(m => {
-					addMarker(m);
+		.then(result => {			
+			if (result.data.length > 0) {				
+				result.data.forEach(m => {
+					let umks = m.location.coordinates;
+					let uname = m.name;
+					addHomeMarker(umks, uname);					
+				});
+			}else{
+				const umk =result.data.location.coordinates;
+				const linname = result.data.name;
+				addHomeMarker(umk, linname);
+				addCircle(umk, dist, distmsg);
+	
+			}
+		});
+
+	fetch('/api/vi/stores')
+		.then(response => {
+			return response.json();
+		})
+		.then(result => {
+			if (result.data.length > 0) {				
+				result.data.forEach(m => {
+					let mks = m.location.coordinates;
+					let sname = m.name;
+					addMarker(mks, sname);					
 				});
 			}
 		});
@@ -54,23 +79,10 @@
 		scrollWheelZoom: false,
 	});
 
-	
-	
-
-	addHomeMarker(home, msg);	
-	//createMap(center);
+	//addHomeMarker(home, msg);
 	createSecureMap(center);
-	addCircle(home, dist, distmsg);
-
-	function createMap(cntr) {
-		const osm = new L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-			attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-		});
-		osm.addTo(mymap);		
-	}
-
-	function createSecureMap(cntr){
-
+	
+	function createSecureMap(cntr) {
 		const osms = new L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 			attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
 		}).addTo(mymap);
@@ -86,8 +98,10 @@
 			.bindPopup(msg);
 	}
 
-	function addMarker(m) {
-		L.marker(m).addTo(mymap);
+	function addMarker(m, storename) {
+		L.marker(m)
+			.addTo(mymap)
+			.bindPopup(storename);
 	}
 
 	function addHomeMarker(m, msg) {

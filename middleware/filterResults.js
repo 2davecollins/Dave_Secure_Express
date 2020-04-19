@@ -35,10 +35,8 @@ const filterResults = (model) => async (req, res, next) => {
     const limit = parseInt(req.query.limit, 10) || 25;
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
-    const total = await model.countDocuments();
-  
-    query = query.skip(startIndex).limit(limit);
-  
+    const total = await model.countDocuments();  
+    query = query.skip(startIndex).limit(limit);  
     
     // Executing query
     const results = await query;
