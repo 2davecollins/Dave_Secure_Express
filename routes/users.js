@@ -41,7 +41,7 @@ router.get('/captcha', function(req, res) {
 
 // Login Page
 router.get('/login', forwardAuthenticated, (req, res) => {
-	console.log('logged in');
+	req.flash('success_msg', `logged in`);
 	res.render('login');
 });
 
@@ -139,7 +139,7 @@ router.post('/register', (req, res) => {
 								.save()
 								.then(user => {
 									console.log(`user : ${user}`);
-
+									logger.log('info', `new user registered`);
 									req.flash('success_msg', 'You are now registered and can log in');
 									res.redirect('/users/login');
 								})
@@ -162,7 +162,8 @@ router.post('/login', (req, res, next) => {
 		(req.connection.socket ? req.connection.remoteAddress : null);
 	const ipa = ip.split(':');
 	console.log(ipa[3]);
-	logger.log('info', ` ${ipa[3]} is logging in`);
+	logger.log('info', ` ${ipa[3]} logging in`);
+	req.flash('success_msg', `logged in`);
 
 	passport.authenticate('local', {
 		successRedirect: '/dashboard',

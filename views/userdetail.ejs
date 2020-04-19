@@ -1,0 +1,135 @@
+<h1 class="mt-4">User Details</h1>
+<p class="lead mb-3">Modify User Details</p>
+<% include ./partials/messages %>
+
+<div class="row">
+    <div class="col">    
+        <form action="/admin/save/" method="POST" autocomplete="off" >
+        <input type="hidden" name="_id" value="<%= userList._id %>"/>
+        <div class="form-group">
+            <label for="name">Name</label>    
+            <input id="name" class="form-control" name="name" value="<%= userList.name %>"/>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="password">password</label>    
+                    <input id="password" class="form-control" name="road" value=""/>
+                </div>
+            </div>
+        </div>
+        <div class="row">        
+            <div class="col">
+                <div class="form-group">
+                    <label for="password1">New Password</label>    
+                    <input id="password1" class="form-control" name="password1" value=""/>
+                </div>
+            </div>         
+            <div class="col">
+                <div class="form-group">
+                    <label for="password2">Confirm New Password</label>    
+                    <input id="password2" class="form-control" name="password2" value=""/>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="latitude">Latitude</label>    
+                    <input id="latitude" class="form-control" name="latitude" value="<%= userList.location.coordinates[0] %>"/>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="longtitude">Longtitude</label>    
+                    <input id="longtitude" class="form-control" name="longtitude" value="<%= userList.location.coordinates[1] %>"/>
+                </div>
+            </div>       
+        </div>
+
+        
+    <!-- </div> -->
+        <br/>       
+        <button type="submit" class="btn btn-primary ">Save Details</button>
+        </form>
+        
+    </div>
+    <div class="col">        
+        <div class="row">
+            <div width="100%" height="auto">
+                <div id="mapid" style="width: 40vw; height: 50vh;"></div>
+            </div>            
+        </div>
+    </div>  
+</div>
+   
+<script>
+
+    const inputlat = document.getElementById('latitude');
+    const inputlng = document.getElementById('longtitude');
+
+    const latval = inputlat.value;
+    const lngval = inputlng.value;
+    const username = document.getElementById('name').value;
+   
+
+    const home = [latval,lngval];
+    // const center = [latval,lngval];
+    const msg = `${username}`;
+    const dist = 2000;
+
+    const mymap = L.map('mapid', {
+        center: home,
+        minZoom: 3,
+        zoom: 15,
+        dragging: true,
+        doubleClickZoom: false,
+        scrollWheelZoom: false,
+    });
+
+  
+    createSecureMap(home);  
+    addStoreMarker(home, msg);	
+
+	
+    function createSecureMap(cntr){
+
+        const osms = new L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
+        }).addTo(mymap);
+    }
+
+
+    function addStoreMarker(m, msg) {
+        const greenIcon = new L.Icon({
+            iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41],
+        });
+        let myMarker =L.marker(m, {
+        icon: greenIcon,
+        draggable: true
+        
+        })
+            .addTo(mymap)
+            .bindPopup(msg)
+        .openPopup()
+        .on('dragend', function() {
+            let coord = String(myMarker.getLatLng()).split(',');		
+            let latm = coord[0].split('(');			
+            let lngm = coord[1].split(')');      
+        inputlat.value=latm[1];
+        inputlng.value=lngm[0];
+            
+    });
+    }
+
+     
+  
+</script>
+
+

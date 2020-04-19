@@ -1,36 +1,176 @@
-<h1 class="mt-4">Modify Store Detail</h1>
+<h1 class="mt-4">Store Details</h1>
 <p class="lead mb-3">Welcome </p>
-<p class="lead mb-3">Enter Store Details</p>
+<p class="lead mb-3">Modify Store Details</p>
 <% include ./partials/messages %>
 
-<form action="/location/add_location" method="POST" enctype="multipart/form-data" autocomplete="off">
-  <div class="form-group">
-    <label for="postitle">Store Name</label>    
-    <input id="postitle" class="form-control" name="name"/>
-  </div>
-  <div class="form-group">
-    <label for="postaddress">Address</label>    
-    <textarea id="postaddress" class="form-control" rows="4" cols="60"></textarea>
-  </div>
-  <div class="form-check">
-    <input type="checkbox" class="form-check-input" id="frompicture">
-    <label class="form-check-label" for="frompicture">Take Details from Picture</label>
-  </div>
-  <div class="form-group">
-    <label for="postitle">Upload Image</label>      
-    <input type="file" class="form-control" name="myImage" 
-    onchange="document.getElementById('preview').src= window.URL.createObjectURL(this.files[0])"/>
-  </div>
-  <img id="preview" src="/<%= typeof file != 'undefined' ? file: 'uploads/notfound.png' %>" alt="alt" height="500" width="505" class="img-thumbnail" />
-  <br/>
-  <button type="submit" class="btn btn-primary ">Add Store</button>
- 
-</form>
-<br/>
+<div class="row">
+  <div class="col">    
+    <form action="/storelocation/save/" method="POST" autocomplete="off" enctype="multipart/form-data" >
+      <input type="hidden" name="_id" value="<%= _id %>"/>
+      <div class="form-group">
+        <label for="name">Store Name</label>    
+        <input id="name" class="form-control" name="name" value="<%= name %>"/>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label for="road">Road</label>    
+            <input id="road" class="form-control" name="road" value="<%= location.road %>"/>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group">
+            <label for="city">City</label>    
+            <input id="city" class="form-control" name="city" value="<%= location.city %>"/>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label for="county">County</label>    
+            <input id="county" class="form-control" name="county" value="<%= location.county %>"/>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group">
+            <label for="country">Country</label>    
+            <input id="country" class="form-control" name="country" value="<%= location.country %>"/>
+          </div>
+        </div>        
+      </div>
+      
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label for="latitude">Latitude</label>    
+            <input id="latitude" class="form-control" name="latitude" value="<%= location.coordinates[0] %>"/>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group">
+            <label for="longtitude">Longtitude</label>    
+            <input id="longtitude" class="form-control" name="longtitude" value="<%= location.coordinates[1] %>"/>
+          </div>
+        </div>       
+      </div>
 
+      <div class="row">
+        <div class="col">
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="frompicture">
+            <label class="form-check-label" for="frompicture">Take Details from Picture</label>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group">
+        <label for="myImage">Upload Image</label>      
+        <input type="file" class="form-control" name="myImage" 
+        onchange="document.getElementById('preview').src= window.URL.createObjectURL(this.files[0])"/>
+      </div>
+        </div>
+      </div>
+      <br/>       
+      <button type="submit" class="btn btn-primary ">Save Store Details</button>
+    </form>
+    
+  </div>
+  <div class="col">
+    
+    <div class="row">
+      <div width="100%" height="auto">
+        <div id="mapid" style="width: 40vw; height: 50vh;"></div>
+      </div>            
+    </div>
+    <div class="row">
+      
+      <img id="preview" src="/<%= typeof file != 'undefined' ? file: 'uploads/notfound.png' %>" alt="alt" height="500" width="505" class="img-thumbnail" />
+      <br/>
+            
+    </div>
 
-
-
+  </div>
+  
+  
 </div>
+
+<br/>
+</div>
+
+<script>
+
+  const inputlat = document.getElementById('latitude');
+  const inputlng = document.getElementById('longtitude');
+
+  const latval = inputlat.value;
+  const lngval = inputlng.value;
+  const storename = document.getElementById('name').value;
+  const road = document.getElementById('road').value;
+
+  const home = [latval,lngval];
+ // const center = [latval,lngval];
+	const msg = `${storename} <br/> ${road}`;
+	const dist = 2000;
+
+	const mymap = L.map('mapid', {
+		center: home,
+		minZoom: 3,
+		zoom: 15,
+		dragging: true,
+		doubleClickZoom: false,
+		scrollWheelZoom: false,
+	});
+
+  
+  createSecureMap(home);  
+	addStoreMarker(home, msg);	
+  addCircle(home, dist);
+	
+	function createSecureMap(cntr){
+
+		const osms = new L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
+		}).addTo(mymap);
+	}
+	
+	
+	function addStoreMarker(m, msg) {
+		const greenIcon = new L.Icon({
+			iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+			shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+			iconSize: [25, 41],
+			iconAnchor: [12, 41],
+			popupAnchor: [1, -34],
+			shadowSize: [41, 41],
+		});
+		let myMarker =L.marker(m, {
+       icon: greenIcon,
+       draggable: true
+      
+      })
+			.addTo(mymap)
+			.bindPopup(msg)
+      .openPopup()
+      .on('dragend', function() {
+			let coord = String(myMarker.getLatLng()).split(',');		
+			let latm = coord[0].split('(');			
+			let lngm = coord[1].split(')');      
+      inputlat.value=latm[1];
+      inputlng.value=lngm[0];
+			
+    });
+	}
+  
+  function addCircle(ctnr, dist) {
+    L.circle(ctnr, dist, {
+      color: 'red',
+      fillColor: '#f03',
+      fillOpacity: 0.05,
+    })
+    .addTo(mymap);    
+  }
+  
+  
+</script>
 
 

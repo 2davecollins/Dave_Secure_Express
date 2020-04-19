@@ -3,14 +3,17 @@ const fs = require('fs'),
 	fetch = require('node-fetch');
 
 function getAppdressFromIP(ip) {
-	return fetch(`http://free.ipwhois.io/json/${ip}`);
+	const url = `http://free.ipwhois.io/json/${ip}`;
+	console.log(url)
+	return fetch(url).then(res => res.json())       
+				.catch(err => console.log(err));
 }
 
 function getLatLonFromAddr(addr) {
     const url = `https://nominatim.openstreetmap.org/search?q=${addr}&format=geojson`;
     console.log(addr);
     return fetch(url).then(res => res.json())       
-        .catch(err => console.log(err));
+        		.catch(err => console.log(err));
 	
 }
 function getAddressFromLatLng(coord) {	
@@ -48,7 +51,7 @@ module.exports = {
 		}
 	},
 	getLatLngFromIp: async function(ip) {
-        let result ={message:"fail",status:400};
+        let result ={success:false,status:400};
 		try {
 			result = await getAppdressFromIP(ip);
 			return result;

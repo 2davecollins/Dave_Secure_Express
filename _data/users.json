@@ -1,6 +1,5 @@
 [
-	{
-		
+	{		
 		"name": "Admin Account",
 		"email": "admin@gmail.com",
 		"role": "user",
@@ -9,7 +8,7 @@
     {
         "name": "David Collins",
         "email": "2davecollins@gmail.com",
-        "role": "user",
+        "role": "admin",
         "password": "$2a$10$G4XP.eQ6QyJQh3qGBCXekOqSVXI6xW/zO7xCiOvk2inRhysDtV.xm"
 
     },

@@ -16,6 +16,7 @@ const options = require('./config/local.js');
 
 // Passport Config
 require('./config/passport')(passport);
+const secret = require('./config/keys').SESSION_SECRET;
 
 // DB Config
 const db = require('./config/keys').mongoURI;
@@ -35,17 +36,11 @@ app.set('view engine', 'ejs');
 // Express body parser
 app.use(express.urlencoded({ extended: true }));
 
-// Express session
-app.use(session({ secret: 'secret', resave: true, saveUninitialized: true }));
+app.use(session({ secret, resave: true, saveUninitialized: true }));
 app.use(express.static("public"));
-
-// Passport middleware
-app.use(passport.initialize());
-app.use(passport.session());
 
 // Connect flash
 app.use(flash());
-
 // Global variables
 app.use(function( req, res, next) {
 	res.locals.success_msg = req.flash('success_msg');
@@ -54,6 +49,13 @@ app.use(function( req, res, next) {
 	next();
 });
 app.locals.loginstate = false;
+
+// Express session
+
+
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 
@@ -80,8 +82,7 @@ app.use('/*',(req,res) =>{
 	res.status(404).render('404',{title:'Oooops sorry page not found . . . . ', image:'/images/error.jpeg'});
 });
 
-const PORT = process.env.PORT || 5000;
-
+//const PORT = process.env.PORT || 5000;
 // app.listen(PORT, () => {
 // 	console.log(`server startedon port ${PORT}`);
 // 	//logger.info(`Server started on port ${PORT}`);

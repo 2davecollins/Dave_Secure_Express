@@ -17,12 +17,18 @@ const StoreSchema = new mongoose.Schema({
 		type: Date,
 		default: Date.now,
 	},
+	edit:{
+		type:Boolean,
+		default: true
+	},
+	image:{
+		type:String,
+		default:'none'
+	},
 	addedBy:{
 		type:String,
 		enum:['user','admin','editor'],
-		default: 'user',
-		required:[true, 'who added store']
-
+		default: 'user',		
 	},
 	location: {
 		//GeoJson Point
@@ -47,7 +53,8 @@ StoreSchema.pre('save', async function(next) {
 	const data = await getLatLonFromAddress(this.address);
 	const loc = data.features[0];
 	
-	if(loc){
+	if(loc && this.edit){
+		console.log("new store data")
 		const coord = {
 			latitude: parseFloat(loc.geometry.coordinates[1]),
 			longtitude: parseFloat(loc.geometry.coordinates[0]),
@@ -57,8 +64,7 @@ StoreSchema.pre('save', async function(next) {
 		faddress = faddress.features[0].properties.address;
 		this.location = {
 			type: 'Point',
-			coordinates: [loc.geometry.coordinates[1], loc.geometry.coordinates[0]],
-			// formattedAddress: faddress.properties.formattedAddress,
+			coordinates: [loc.geometry.coordinates[1], loc.geometry.coordinates[0]],		
 			 road: faddress.road,
 			 city: faddress.city,
 			 county: faddress.county,
@@ -69,9 +75,6 @@ StoreSchema.pre('save', async function(next) {
 	}else{
 		console.log("data not available for "+this.address);
 	}
-	
-    
-
 
 	next();
 });

@@ -1,0 +1,31 @@
+<h1>List of Users</h1>
+<% include ./partials/messages %>
+<table class="table table-striped">
+    <thead>
+        <tr>
+          <th scope="col">name</th>
+          <th scope="col">id</th>
+          <th scope="col">role</th>
+          <th scope="col">Registered</th>
+          <th scope="col"></th>   
+        </tr>
+      </thead>
+
+      <tbody>
+        <% for (var i = 0; i < userList.length; i++) { %>
+            <tr>
+              <th scope="row"><%= userList[i].name %></th>
+              <th><%= userList[i]._id %></th>
+              <th><%= userList[i].role %></th>
+              <th><%= new Date(userList[i].createdOn).toUTCString() %></th>
+              <th>
+                 <div style="float:left">
+                  <a class="btn btn-raised btn-danger" href="/admin/loc/<%= userList[i]._id %>">Change location</a></td> 
+                  <a class="btn btn-raised btn-danger" href="/admin/role/<%= userList[i]._id %>">Change role</a></td>                           
+                  <a class="btn btn-raised btn-danger" href="/admin/delete/<%= userList[i]._id %>">Delete</a></td>
+                 </div>
+               </th>
+            </tr>    
+        <% } %>
+      </tbody>    
+ </table>

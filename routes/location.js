@@ -22,6 +22,8 @@ const upload = multer({
 	},
 }).single('myImage');
 
+// TODO move to middleware helper
+
 // Check File Type
 function checkFileType(file, cb) {
 	// Allowed ext
