@@ -1,7 +1,9 @@
 const express = require('express'),
+
 	expressLayouts = require('express-ejs-layouts'),
 	mongoose = require('mongoose'),
 	mongoSanitize = require('express-mongo-sanitize'),
+	cookieParser = require('cookie-parser'),
 	passport = require('passport'),
 	flash = require('connect-flash'),
 	errorHandler = require('./middleware/errorResponse'),
@@ -10,9 +12,10 @@ const express = require('express'),
 	helmet = require('helmet'),
 	xss = require('xss-clean'),
 	rateLimit = require('express-rate-limit'),
-	hpp = require('hpp')
+	hpp = require('hpp'),
 	http = require('http'),
-	https = require('https');
+	https = require('https'),
+	cors = require('cors');
 
 //init app
 const app = express();
@@ -30,7 +33,7 @@ mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 // Connect to MongoDB
 mongoose
-	.connect(db, { useNewUrlParser: true, useUnifiedTopology: true , useFindAndModify: false,useCreateIndex: true})
+	.connect(db, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
 	.then(() => console.log('MongoDB Connected'))
 	.catch(err => console.log(err));
 
@@ -39,17 +42,19 @@ app.use(expressLayouts);
 app.set('view engine', 'ejs');
 
 // Express body parser
+app.use(express.json());
+// cookie-parser
+app.use(cookieParser());
 
 app.use(express.urlencoded({ extended: true }));
 
-
 app.use(session({ secret, resave: true, saveUninitialized: true }));
-app.use(express.static("public"));
+app.use(express.static('public'));
 
 // Connect flash
 app.use(flash());
 // Global variables
-app.use(function( req, res, next) {
+app.use(function(req, res, next) {
 	res.locals.success_msg = req.flash('success_msg');
 	res.locals.error_msg = req.flash('error_msg');
 	res.locals.error = req.flash('error');
@@ -58,7 +63,6 @@ app.use(function( req, res, next) {
 app.locals.loginstate = false;
 
 // Express session
-
 
 // Passport middleware
 app.use(passport.initialize());
@@ -76,13 +80,15 @@ app.use(xss());
 // Rate Limit
 const limiter = rateLimit({
 	windowMs: 10 * 60 * 1000, //10 minutes
-	max: 100
-})
+	max: 100,
+});
 app.use(limiter);
 
 //Prevent http param issues
 app.use(hpp());
 
+//Enable CORS
+app.use(cors());
 
 // Routes
 app.use('/', require('./routes/index.js'));
@@ -93,26 +99,29 @@ app.use('/location', require('./routes/location'));
 app.use('/storelocation', require('./routes/storelocations'));
 app.use('/map', require('./routes/map.js'));
 app.use('/log', require('./routes/log.js'));
-//app.use('/api', require('./routes/api/locationdata.js'));
 
+//api
 app.use('/api/vi/stores', require('./routes/api/stores'));
-app.use('/api/vi/users', require('./routes/api/users'))
+app.use('/api/vi/users', require('./routes/api/users'));
+app.use('/api/vi/auth',  require('./routes/api/auth'));
+
 
 //use custom error handler
 app.use(errorHandler);
 // error and page not found to prevent stack trace
 
-app.use('/*',(req,res) =>{
-	res.status(404).render('404',{title:'Oooops sorry page not found . . . . ', image:'/images/error.jpeg'});
+app.use('/*', (req, res) => {
+	logger.log('warn','page not found');
+	res.status(404).render('404', { title: 'Oooops sorry page not found . . . . ', image: '/images/error.jpeg' });
 });
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-	console.log(`server startedon port ${PORT}`);
-	//logger.info(`Server started on port ${PORT}`);
-});
+// const PORT = process.env.PORT || 5000;
+// app.listen(PORT, () => {
+// 	console.log(`server startedon port ${PORT}`);
+// 	//logger.info(`Server started on port ${PORT}`);
+// });
 
 // needs to be run as sudo
 
-//http.createServer(app).listen(80);
-//https.createServer(options,app).listen(443)
+http.createServer(app).listen(80);
+https.createServer(options, app).listen(443);

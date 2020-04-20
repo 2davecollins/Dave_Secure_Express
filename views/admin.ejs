@@ -1,0 +1,27 @@
+<% include ./partials/messages %>
+<div class="row mt-5">
+    <div class="col-md-6 m-auto">
+      <div class="card card-body text-center" >     
+        <h1><span style="font-size: 160px; color: Dodgerblue;">
+            <i class="far fa-meh-rolling-eyes"></i>
+        </span></i></h1>        
+        <a href="/admin/user" class="btn btn-secondary btn-block login">Check your own Details</a>
+        <br/>
+        <h2>OR</h2>
+        <br/>
+        
+          <form action="/admin" method="POST" autocomplete="off">
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" required class="form-control" placeholder="Enter Email"/>
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input  type="password" id="password" name="password" required class="form-control" placeholder="Enter Password"/>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Administrators Logon</button>
+          </form>
+      </div>
+    </div>
+  </div>
+  

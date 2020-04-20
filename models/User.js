@@ -1,5 +1,8 @@
 const mongoose = require('mongoose'),
+	jwt = require('jsonwebtoken'),
 	{ getLatLngFromIp } = require('../utility/geolocation'),
+	JWT_SECRET = 'THEbestKEPTsecretINdublin',
+	JWT_EXPIRE= '1d',
 	MAX_LOGIN_ATTEMPTS = 2, //for testing
 	LOCK_TIME = 2 * 60 * 1000; //2min
 
@@ -159,6 +162,17 @@ UserSchema.pre('save', async function(next) {
 
 	next();
 });
+
+UserSchema.methods.getSignedJWTToken = function(){
+	return jwt.sign({id:this._id}, JWT_SECRET,{
+		expiresIn:JWT_EXPIRE
+	})
+};
+
+UserSchema.methods.matchPassword = async function(enteredPassword) {
+	return await bcrypt.compare(enteredPassword, this.password);
+  };
+  
 
 const User = mongoose.model('User', UserSchema);
 

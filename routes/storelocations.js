@@ -64,8 +64,8 @@ router.get('/delete/:id', async (req, res, next) => {
 	try {
 		const store = await Store.findById(req.params.id);
 		if (!store) {
-			req.flash('error', err);
-			logger.log('warn', `delete user error  ${err}`);
+			req.flash('error', 'Problem Deleting User');
+			logger.log('warn', 'delete user error');
 			return next(new ErrorResponse(`Store not found with id of ${req.params.id}`, 404));
 		}
 		store.remove();
@@ -85,13 +85,13 @@ router.get('/edit/:id', async (req, res, next) => {
 		const store = await Store.findById(req.params.id);
 		res.render('storedetail', store);
 		if (!store) {
-			req.flash('error', err);
-			logger.log('warn', `${err}`);
+			req.flash('error', 'store not found');
+			logger.log('warn','store no found');
 			return next(new ErrorResponse(`Store not found with id of ${req.params.id}`, 404));
 		}
 	} catch (err) {
 		req.flash('error');
-		store = {
+		const store = {
 			name: '',
 			location: {
 				road: '',
@@ -110,7 +110,7 @@ router.post('/save', upload, async (req, res, next) => {
 	
 	
 	try {
-		let image = "none";
+		let image = 'none';
 		if(req.file){
 			console.log(req.file.filename);
 			image = req.file.filename;
@@ -137,7 +137,7 @@ router.post('/save', upload, async (req, res, next) => {
 		// }
 
 		const filter = { _id: req.body._id };
-		store = await Store.findOneAndUpdate(filter, newData, {
+		const store = await Store.findOneAndUpdate(filter, newData, {
 			new: true,
 			runValidators: true,
 		});

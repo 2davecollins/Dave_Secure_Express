@@ -41,7 +41,7 @@ router.get('/captcha', function(req, res) {
 
 // Login Page
 router.get('/login', forwardAuthenticated, (req, res) => {
-	req.flash('success_msg', `logged in`);
+	req.flash('success_msg', 'logged in');
 	res.render('login');
 });
 
@@ -138,9 +138,10 @@ router.post('/register', (req, res) => {
 							newUser
 								.save()
 								.then(user => {
-									console.log(`user : ${user}`);
-									console.log('registered');
-									logger.log('info', `new user registered`);
+									//console.log(`user : ${user}`);
+									//console.log('registered');
+									console.log(user.getSignedJWTToken());
+									logger.log('info', 'new user registered');
 									req.flash('success_msg', 'You are now registered and can log in');
 									res.redirect('/users/login');
 								})
@@ -165,7 +166,7 @@ router.post('/login', (req, res, next) => {
 	console.log(ipa[3]);
 	req.app.locals.ip = `${ipa[3]}`;
 	logger.log('info', ` ${ipa[3]} logging in`);
-	req.flash('success_msg', `logged in`);
+	req.flash('success_msg', 'logged in');
 
 	passport.authenticate('local', {
 		successRedirect: '/dashboard',
@@ -184,7 +185,8 @@ router.get('/logout', (req, res) => {
 	const ipa = ip.split(':');
 	logger.log('info', `${ipa[3]} has logged out`);
 	req.app.locals.loginstate = false;
-	req.app.locals.ip = ``;
+	
+	req.app.locals.ip = '';
 	req.logout();
 	req.flash('success_msg', 'You are logged out');
 	res.redirect('/users/login');

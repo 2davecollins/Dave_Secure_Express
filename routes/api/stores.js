@@ -11,33 +11,22 @@ const {
 } = require('../../Controllers/stores');
 
 const Store = require('../../models/Store');
-
 const router = express.Router();
-
+const errorResponse = require('../../utility/errorResponse');
+const { protect, authorize } = require('../../middleware/auth');
 const filterResults = require('../../middleware/filterResults');
-
-
-// 	.route('/')
-// 	.get(advancedResults(Store, 'courses'), getStores)
-// 	.post(protect, authorize('publisher', 'admin'), createStore);
-
-// router
-// 	.route('/:id')
-// 	.get(getStore)
-// 	.put(protect, authorize('publisher', 'admin'), updateStore)
-//     .delete(protect, authorize('publisher', 'admin'), deleteStore);
 
 
 router
 	.route('/')
 	.get(filterResults(Store),getStores)
-	.post(createStore);
+	.post(protect,createStore);
 
 router
 	.route('/:id')
 	.get(getStore)
-	.put(updateStore)
-	.delete(deleteStore);
+	.put(protect,updateStore)
+	.delete(protect,deleteStore);
 
 
 module.exports = router;
