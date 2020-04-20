@@ -1,5 +1,4 @@
 <h1 class="mt-4">Store Details</h1>
-<p class="lead mb-3">Welcome </p>
 <p class="lead mb-3">Modify Store Details</p>
 <% include ./partials/messages %>
 
@@ -57,9 +56,14 @@
 
       <div class="row">
         <div class="col">
-          <div class="form-check">
+          <!-- <div class="form-check">
             <input type="checkbox" class="form-check-input" id="frompicture">
             <label class="form-check-label" for="frompicture">Take Details from Picture</label>
+          </div> -->
+        <div>
+          <br/>                              
+          <button type="submit" class="btn btn-primary ">Save Store Details</button>
+          <a class="btn btn-primary" href="/storelocation" role="button">Back</a>
           </div>
         </div>
         <div class="col">
@@ -67,35 +71,31 @@
         <label for="myImage">Upload Image</label>      
         <input type="file" class="form-control" name="myImage" 
         onchange="document.getElementById('preview').src= window.URL.createObjectURL(this.files[0])"/>
+        
       </div>
+      <div class="row">
+        <div class="col">
+          <br/>
+          <img id="preview" src="/<%= typeof file != 'undefined' ? file: 'images/uploadimage.jpg' %>" alt="alt" height="200" width="200" class="img-thumbnail" />
+      
         </div>
       </div>
-      <br/>       
-      <button type="submit" class="btn btn-primary ">Save Store Details</button>
+    </div>
+  </div>
+     
     </form>
     
   </div>
-  <div class="col">
-    
+  <div class="col">    
     <div class="row">
       <div width="100%" height="auto">
         <div id="mapid" style="width: 40vw; height: 50vh;"></div>
       </div>            
     </div>
-    <div class="row">
-      
-      <img id="preview" src="/<%= typeof file != 'undefined' ? file: 'uploads/notfound.png' %>" alt="alt" height="500" width="505" class="img-thumbnail" />
-      <br/>
-            
-    </div>
-
-  </div>
-  
-  
+  </div>  
 </div>
 
-<br/>
-</div>
+
 
 <script>
 

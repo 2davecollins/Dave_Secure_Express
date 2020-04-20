@@ -33,7 +33,7 @@ const users = JSON.parse(
 const importData = async () => {
   console.log("Import  Data");
   try {
-    //await Store.create(stores);   
+    await Store.create(stores);   
     await User.create(users);   
     console.log('Data Imported...'.green.inverse);
     process.exit();

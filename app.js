@@ -34,7 +34,9 @@ app.use(expressLayouts);
 app.set('view engine', 'ejs');
 
 // Express body parser
+
 app.use(express.urlencoded({ extended: true }));
+
 
 app.use(session({ secret, resave: true, saveUninitialized: true }));
 app.use(express.static("public"));
@@ -75,8 +77,6 @@ app.use('/api/vi/users', require('./routes/api/users'))
 
 //use custom error handler
 app.use(errorHandler);
-
-
 // error and page not found to prevent stack trace
 
 app.use('/*',(req,res) =>{

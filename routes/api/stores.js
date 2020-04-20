@@ -16,14 +16,7 @@ const router = express.Router();
 
 const filterResults = require('../../middleware/filterResults');
 
-// router.use('/:bootcampId/courses', courseRouter);
-// router.use('/:bootcampId/reviews', reviewRouter);
 
-// router.route('/radius/:zipcode/:distance').get(getBootcampsInRadius);
-
-// router.route('/:id/photo').put(protect, authorize('publisher', 'admin'), bootcampPhotoUpload);
-
-// router
 // 	.route('/')
 // 	.get(advancedResults(Store, 'courses'), getStores)
 // 	.post(protect, authorize('publisher', 'admin'), createStore);
@@ -34,8 +27,6 @@ const filterResults = require('../../middleware/filterResults');
 // 	.put(protect, authorize('publisher', 'admin'), updateStore)
 //     .delete(protect, authorize('publisher', 'admin'), deleteStore);
 
-
-    
 
 router
 	.route('/')

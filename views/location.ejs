@@ -4,34 +4,15 @@
 <% include ./partials/messages %>
 <%= typeof msg != 'undefined' ? msg : ' ' %>
 
-<form action="/location/add_location" method="POST" enctype="multipart/form-data" autocomplete="off">
+<form action="/location/new_location/" method="POST">
   <div class="form-group">
-    <label for="postitle">Store Name</label>    
-    <input id="postitle" class="form-control" name="name"/>
-  </div>
-  <div class="form-group">
-    <label for="postaddress">Address</label>    
-    <textarea id="postaddress" class="form-control" rows="4" cols="60"></textarea>
-  </div>
-  <div class="form-check">
-    <input type="checkbox" class="form-check-input" id="frompicture">
-    <label class="form-check-label" for="frompicture">Take Details from Picture</label>
+    <label for="storename">Store Name</label>    
+    <input id="storename1" class="form-control" name="name" />
   </div>
   <div class="form-group">
-    <label for="postitle">Upload Image</label>      
-    <input type="file" class="form-control" name="myImage" 
-    onchange="document.getElementById('preview').src= window.URL.createObjectURL(this.files[0])"/>
+    <label for="storeaddress">Address</label>    
+    <textarea id="storeaddress1" name="address" class="form-control" rows="4" cols="60"></textarea>
   </div>
-  <img id="preview" src="/<%= typeof file != 'undefined' ? file: 'uploads/notfound.png' %>" alt="alt" height="500" width="505" class="img-thumbnail" />
-  <br/>
+  <input type="hidden" name="addedBy" value="<%= user.role %>"/>
   <button type="submit" class="btn btn-primary ">Add Store</button>
- 
 </form>
-<br/>
-
-
-
-
-</div>
-
-

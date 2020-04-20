@@ -13,22 +13,33 @@
         </tr>
       </thead>
 
-      <tbody>
-        <% for (var i = 0; i < storeList.length; i++) { %>
-            <tr>
-              <th><%= storeList[i]._id %></th>              
-              <th><%= storeList[i].name %></th>
-              <th><%= storeList[i].location.road %></th>            
-              <th><%= storeList[i].location.county %></th>
-              <th><%= storeList[i].location.country %></th>
-              <th>
-                <div style="float:left">
-                  <a class="btn btn-raised btn-danger" href="/storelocation/edit/<%= storeList[i]._id %>">Edit</a></td>                           
-                  <a class="btn btn-raised btn-danger" href="/storelocation/delete/<%= storeList[i]._id %>">Delete</a></td>
-                </div>
-              </th>           
-            </tr>    
-        <% } %>
+      <tbody>        
+
+        <% if(typeof storeList != 'undefined' ){ %>
+          <% var storelength = storeList.length %>
+        <% } else{ %>  
+          <% var storelength = 0 %>
+        <% } %>          
+          
+          <% for (var i = 0; i < storelength ; i++) { %>
+              <tr>
+                <th><%= typeof storeList != 'undefined' ? storeList[i]._id : '' %></th>              
+                <th><%= typeof storeList != 'undefined' ? storeList[i].name: '' %></th>
+                <th><%= typeof storeList != 'undefined' ? storeList[i].location.road : '' %></th>            
+                <th><%= typeof storeList != 'undefined' ? storeList[i].location.county: '' %></th>
+                <th><%= typeof storeList != 'undefined' ? storeList[i].location.country: '' %></th>
+                <th>
+                  <div style="float:left">
+                    <a class="btn btn-raised btn-danger" href="/storelocation/edit/<%= storeList[i]._id %>">Edit</a></td>                           
+                    <a class="btn btn-raised btn-danger" href="/storelocation/delete/<%= storeList[i]._id %>">Delete</a></td>
+                  </div>
+                </th>           
+              </tr>    
+          <% } %>
+        
+       
+       
+
       </tbody>    
  </table>
 

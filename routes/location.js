@@ -1,7 +1,11 @@
 const express = require('express'),
 	multer = require('multer'),
 	path = require('path'),
-	router = express.Router();
+	router = express.Router(),
+	Store = require('../models/Store'),
+	logger = require('../config/winston');
+
+
 
 let loginstate = false;
 const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
@@ -24,6 +28,32 @@ const upload = multer({
 
 // TODO move to middleware helper
 
+async function  getStores(){
+	try{
+		return await Store.find().sort({name: 1});		
+		
+	}catch(err){
+		logger.log('warn', `mongodb logs error ${err}`);				
+	}
+}
+async function  getStore(id){
+	try{
+		return await Store.findOne({_id:id});		
+		
+	}catch(err){
+		logger.log('warn', `mongodb logs error ${err}`);				
+	}
+}
+
+async function  createStore(newStore){
+	try{
+		return await Store.create(newstore);		
+		
+	}catch(err){
+		logger.log('warn', `mongodb logs error ${err}`);				
+	}
+}
+
 // Check File Type
 function checkFileType(file, cb) {
 	// Allowed ext
@@ -42,56 +72,83 @@ function checkFileType(file, cb) {
 }
 
 router.get('/', (req, res) => {
-	console.log(">>>>>>>>>>>>>>>...")
-	console.log(req.user)
+	
+	
 	res.render('map', {
 		user: req.user,
 	});
 });
+
+router.post('/new_location/', async (req,res)=> {
+	
+	const store = req.body; 
+	await Store.create(store);
+	const storeList = await getStores();	
+	res.status(200).render('stores',{storeList});
+
+})
+
+	
+
 
 
 router.get('/add_location', ensureAuthenticated, (req, res) =>
 	res.render('location', {
 		user: req.user,
 	})
+	
 );
-router.get('/show_stores', (req, res) => {
-	console.log('>>>>>>>>>>>>>>>...');
-	console.log(req);
+router.get('/show_stores', async (req, res) => {	
+	
+	try{
+		const storeList = await getStores();
+		res.status(200).render('stores',{storeList});	
 
-	res.render('stores');
+	}catch(err){
+		logger.log('warn', `${err}`);
+
+	}
 });
 
-router.post('/add_location', ensureAuthenticated, (req, res) => {
-	console.log('post in location');
+router.post('/add_location', async (req, res) => {
+	
+	const { name, address } = req.body;	
 
-	upload(req, res, err => {
-		if (err) {
-			res.render('location', {
-				msg: err,
-				user: req.user,
-				file: req.file,
-			});
-		} else {
-			console.log('in location');
-			console.log(req.file);
-			if (req.file == undefined) {
-				res.render('location', {
-					msg: 'Error: No File Selected!',
-					user: req.user,
-				});
-				req.flash('error_msg', 'No File Selected');
-			} else {
-				req.flash('success_msg', 'File uploaded');
-				res.render('stores', {
-					msg: 'File Uploaded!',
-					user: req.user,
-					file: `uploads/${req.file.filename}`,
-					storeList: [{ name: 'dave', road: 'captains road', county: 'Dublin', country: 'Ireland' }],
-				});
-			}
-		}
-	});
+	const storeList = await getStores();
+	res.status(200).render('stores',{storeList});
+	
+
+	// upload(req, res, err => {
+	// 	if (err) {
+	// 		res.render('location', {
+	// 			msg: err,
+	// 			user: req.user,
+	// 			file: req.file,
+	// 			store: store
+	// 		});
+	// 	} else {
+	// 		console.log('in location');
+	// 		console.log(req.user);
+
+			
+	// 		if (req.file == undefined) {
+	// 			res.render('location', {
+	// 				msg: 'Error: No File Selected!',
+	// 				user: req.user,
+	// 				store:store
+	// 			});
+	// 			req.flash('error_msg', 'No File Selected');
+	// 		} else {
+	// 			req.flash('success_msg', 'File uploaded');
+	// 			res.render('stores', {
+	// 				msg: 'File Uploaded!',
+	// 				user: req.user,
+	// 				file: `uploads/${req.file.filename}`,
+	// 				storeList: storelist
+	// 			});
+	// 		}
+	// 	}
+	// });
 });
 
 module.exports = router;

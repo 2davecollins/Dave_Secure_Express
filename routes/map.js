@@ -1,12 +1,10 @@
 const express = require('express'),
 	router = express.Router();
 
-//getAPI_KEY = () => '556e345dbb8e85c073a5dde9e4df820b';
-//getURLMap = () => 'https://tile.openweathermap.org/map/';
 
 const { getImageMetaData, getGeolocFromAddress,getGeoLocFromIp ,  getGeocodeFromLatLng} = require('../utility/helper');
 const { getAddressFromLatLng,getLatLonFromAddress } = require('../utility/geolocation');
-let markers = require('../models/_datamarkers')
+let markers = [];
 
 
 router.get('/', getImageMetaData,(req, res) => {
@@ -27,7 +25,6 @@ router.get('/addressip', getGeoLocFromIp,(req,res) =>{
 
 router.get('/geocode',(req,res) =>{
 
-	// markers.push(d);
 	getLatLonFromAddress("300+captains+road+crumlin+dublin").then(data =>{
 		
 		const loc = [data.features[0].geometry.coordinates[1],data.features[0].geometry.coordinates[0]];
