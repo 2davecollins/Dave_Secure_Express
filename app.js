@@ -1,11 +1,16 @@
 const express = require('express'),
 	expressLayouts = require('express-ejs-layouts'),
 	mongoose = require('mongoose'),
+	mongoSanitize = require('express-mongo-sanitize'),
 	passport = require('passport'),
 	flash = require('connect-flash'),
 	errorHandler = require('./middleware/errorResponse'),
 	session = require('express-session'),
 	logger = require('./config/winston'),
+	helmet = require('helmet'),
+	xss = require('xss-clean'),
+	rateLimit = require('express-rate-limit'),
+	hpp = require('hpp')
 	http = require('http'),
 	https = require('https');
 
@@ -59,6 +64,24 @@ app.locals.loginstate = false;
 app.use(passport.initialize());
 app.use(passport.session());
 
+//Sanitize mongodb data
+app.use(mongoSanitize());
+
+// Set Security headers
+app.use(helmet());
+
+//Prevent XSS Attacks
+app.use(xss());
+
+// Rate Limit
+const limiter = rateLimit({
+	windowMs: 10 * 60 * 1000, //10 minutes
+	max: 100
+})
+app.use(limiter);
+
+//Prevent http param issues
+app.use(hpp());
 
 
 // Routes
@@ -83,13 +106,13 @@ app.use('/*',(req,res) =>{
 	res.status(404).render('404',{title:'Oooops sorry page not found . . . . ', image:'/images/error.jpeg'});
 });
 
-//const PORT = process.env.PORT || 5000;
-// app.listen(PORT, () => {
-// 	console.log(`server startedon port ${PORT}`);
-// 	//logger.info(`Server started on port ${PORT}`);
-// });
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+	console.log(`server startedon port ${PORT}`);
+	//logger.info(`Server started on port ${PORT}`);
+});
 
 // needs to be run as sudo
 
-http.createServer(app).listen(80);
-https.createServer(options,app).listen(443)
+//http.createServer(app).listen(80);
+//https.createServer(options,app).listen(443)

@@ -27,9 +27,13 @@
     "express": "^4.16.4",
     "express-ejs-layouts": "^2.5.0",
     "express-log-mongo": "^1.1.2",
+    "express-mongo-sanitize": "^2.0.0",
+    "express-rate-limit": "^5.1.1",
     "express-session": "^1.15.6",
     "express-winston": "^4.0.3",
     "haveibeenpwned": "^1.1.0",
+    "helmet": "^3.22.0",
+    "hpp": "^0.2.3",
     "leaflet": "^1.6.0",
     "mongoose": "^5.7.5",
     "monk": "^7.1.2",
@@ -42,7 +46,8 @@
     "passport-local": "^1.0.0",
     "svg-captcha": "^1.4.0",
     "winston": "^3.2.1",
-    "winston-mongodb": "^5.0.1"
+    "winston-mongodb": "^5.0.1",
+    "xss-clean": "^0.1.1"
   },
   "devDependencies": {
     "browserify": "^16.5.1",
