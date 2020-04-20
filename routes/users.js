@@ -114,83 +114,44 @@ router.post('/register', (req, res) => {
 				password2,
 			});
 		} else {
-			saveNewUser(req,res,email,name,password,password2,errors);			
+			User.findOne({ email: email }).then(user => {
+				if (user) {
+					errors.push({ msg: 'Email already exists' });
+					res.render('register', {
+						errors,
+						name,
+						email,
+						password,
+						password2,
+					});
+				} else {
+					const newUser = new User({
+						name,
+						email,
+						password,
+					});
+					// encrypt password prior to saving to data base
+					bcrypt.genSalt(10, (err, salt) => {
+						bcrypt.hash(newUser.password, salt, (err, hash) => {
+							if (err) throw err;
+							newUser.password = hash;
+							newUser
+								.save()
+								.then(user => {
+									console.log(`user : ${user}`);
+									console.log('registered');
+									logger.log('info', `new user registered`);
+									req.flash('success_msg', 'You are now registered and can log in');
+									res.redirect('/users/login');
+								})
+								.catch(err => console.log(err));
+						});
+					});
+				}
+			});
 		}
 	}
 });
-
-function saveWithLockout(){
-
-	testUser.save(function(err) {
-		if (err) throw err;
-	
-		// attempt to authenticate user
-		User.getAuthenticated('jmar777', 'Password123', function(err, user, reason) {
-			if (err) throw err;
-	
-			// login was successful if we have a user
-			if (user) {
-				// handle login success
-				console.log('login success');
-				return;
-			}
-	
-			// otherwise we can determine why we failed
-			var reasons = User.failedLogin;
-			switch (reason) {
-				case reasons.NOT_FOUND:
-				case reasons.PASSWORD_INCORRECT:
-					// note: these cases are usually treated the same - don't tell
-					// the user *why* the login failed, only that it did
-					break;
-				case reasons.MAX_ATTEMPTS:
-					// send email or otherwise notify user that account is
-					// temporarily locked
-					break;
-			}
-		});
-	})
-}
-
-function saveNewUser (req,res,email,name,password,password2,errors){
-
-	User.findOne({ email: email }).then(user => {
-		if (user) {
-			errors.push({ msg: 'Email already exists' });
-			res.render('register', {
-				errors,
-				name,
-				email,
-				password,
-				password2,
-			});
-		} else {
-			const newUser = new User({
-				name,
-				email,
-				password,
-			});
-			// encrypt password prior to saving to data base
-			bcrypt.genSalt(10, (err, salt) => {
-				bcrypt.hash(newUser.password, salt, (err, hash) => {
-					if (err) throw err;
-					newUser.password = hash;
-					newUser
-						.save()
-						.then(user => {
-							console.log(`user : ${user}`);
-							console.log("registered");
-							logger.log('info', `new user registered`);
-							req.flash('success_msg', 'You are now registered and can log in');
-							res.redirect('/users/login');
-						})
-						.catch(err => console.log(err));
-				});
-			});
-		}
-	});
-
-}
 
 // Login
 router.post('/login', (req, res, next) => {
@@ -202,7 +163,7 @@ router.post('/login', (req, res, next) => {
 		(req.connection.socket ? req.connection.remoteAddress : null);
 	const ipa = ip.split(':');
 	console.log(ipa[3]);
-	req.app.locals.ip =`${ipa[3]}`
+	req.app.locals.ip = `${ipa[3]}`;
 	logger.log('info', ` ${ipa[3]} logging in`);
 	req.flash('success_msg', `logged in`);
 
@@ -223,7 +184,7 @@ router.get('/logout', (req, res) => {
 	const ipa = ip.split(':');
 	logger.log('info', `${ipa[3]} has logged out`);
 	req.app.locals.loginstate = false;
-	req.app.locals.ip =``
+	req.app.locals.ip = ``;
 	req.logout();
 	req.flash('success_msg', 'You are logged out');
 	res.redirect('/users/login');
