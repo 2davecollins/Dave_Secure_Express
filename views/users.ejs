@@ -4,10 +4,11 @@
 <table class="table table-striped">
     <thead>
         <tr>
-          <th scope="col">name</th>
+          <th scope="col">Name</th>
           <th scope="col">id</th>
-          <th scope="col">role</th>
+          <th scope="col">Current Role</th>
           <th scope="col">Registered</th>
+          <th scope="col">Change Role</th>
           <th scope="col"></th>   
         </tr>
       </thead>
@@ -20,6 +21,22 @@
               <th><%= userList[i].role %></th>
               <th><%= new Date(userList[i].createdOn).toUTCString() %></th>
               <th>
+                  <div class="radio">
+                    <label><input type="radio" id='user' value="user" onclick="rolechange(this.value);" name="role" 
+                      <%if(userList[i].role == 'user'){%>
+                        <%="checked"%>
+                    <%}%>                                       
+                    >User</label>
+                  </div>
+                  <div class="radio">
+                    <label><input type="radio" id='superuser' value="superuser" onclick="rolechange(this.value);" name="role"
+                      <%if(userList[i].role != 'user'){%>
+                        <%="checked"%>
+                      <%}%>                       
+                      >Super User</label>
+                  </div> 
+              </th>
+              <th>
                  <div style="float:left">
                   <a class="btn btn-raised btn-danger" href="/admin/loc/<%= userList[i]._id %>">Change Details</a></td>                                             
                   <a class="btn btn-raised btn-danger" href="/admin/delete/<%= userList[i]._id %>">Delete</a></td>
@@ -29,3 +46,14 @@
         <% } %>
       </tbody>    
  </table>
+
+<script>
+  function rolechange(val){
+    alert('Role changed to '+val)
+    fetch(`/admin/role?role=${val}`)
+    .then(res => res.json())
+    .then(json => console.log(json));
+
+  }
+
+</script>

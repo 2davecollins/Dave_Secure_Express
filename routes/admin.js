@@ -3,7 +3,7 @@ const monk = require('monk'),
 	dblog = monk(dbl),
 	logger = require('../config/winston'),
 	{ adminlogsAuthenticated } = require('../config/auth'),
-	passport = require('passport'),;
+	passport = require('passport');
 
 const express = require('express'),
 	router = express.Router();
@@ -115,36 +115,44 @@ router.get('/delete/:id', adminlogsAuthenticated, (req, res) => {
 	});
 	
 });
+router.get('/changerole'), (req,res) =>{
+
+	console.log("in changerole");
+}
 
 router.get('/role/:id', adminlogsAuthenticated, (req, res) => {
-	const collection = dblog.get('users');
-	const options = {
-		projection: {},
-		sort: { createdOn: -1 },
-	};
 
-	if (req.params.id) {
-		collection.findOne({ _id: req.params.id }).then(doc => {
-			if (doc.role == 'admin') {
-				collection
-					.findOneAndUpdate({ _id: req.params.id }, { $set: { role: 'superuser' } })
-					.then(updatedDoc => {
-						req.flash('success_msg', `User role updated ${req.params.id}`);
-					});
-			} else {
-				req.flash('error_msg', 'You Need to be Admin to carry out this task');
-			}
-		});
-	}
-	collection.find({}, options, (err, docs) => {
-		if (err) {
-			console.log(err);
-			logger.log('warn', `user display error ${err}`);
-		}
-		//console.log(docs);
-		//logger.log('info', `Usersbeing viewed`);
-		res.render('users', { userList: docs });
-	});
+	const role = req.params.role;
+	console.log(role);
+	console.log
+	// const collection = dblog.get('users');
+	// const options = {
+	// 	projection: {},
+	// 	sort: { createdOn: -1 },
+	// };
+
+	// if (req.params.id) {
+	// 	collection.findOne({ _id: req.params.id }).then(doc => {
+	// 		if (doc.role == 'admin') {
+	// 			collection
+	// 				.findOneAndUpdate({ _id: req.params.id }, { $set: { role: 'superuser' } })
+	// 				.then(updatedDoc => {
+	// 					req.flash('success_msg', `User role updated ${req.params.id}`);
+	// 				});
+	// 		} else {
+	// 			req.flash('error_msg', 'You Need to be Admin to carry out this task');
+	// 		}
+	// 	});
+	// }
+	// collection.find({}, options, (err, docs) => {
+	// 	if (err) {
+	// 		console.log(err);
+	// 		logger.log('warn', `user display error ${err}`);
+	// 	}
+	// 	//console.log(docs);
+	// 	//logger.log('info', `Usersbeing viewed`);
+	// 	res.render('users', { userList: docs });
+	// });
 });
 router.get('/loc/:id', adminlogsAuthenticated, (req, res) => {
 	const collection = dblog.get('users');
@@ -209,7 +217,7 @@ router.post('/save', adminlogsAuthenticated, (req, res) => {
 				.then(updatedDoc => {
 					console.log(updatedDoc);
 					req.flash('success_msg', `User role updated ${req.params.id}`);
-					getAllUsers({msg:"great it worked"});
+					getAllUsers();
 					
 				});
 				
@@ -220,13 +228,13 @@ router.post('/save', adminlogsAuthenticated, (req, res) => {
 	});	
 
 		
-	function getAllUsers(message){
+	function getAllUsers(){
 		collection.find({}, options, (err, docs) => {
 			if (err) {
 				logger.log('warn', `user display error ${err}`);
 			}
 			
-			res.render('users', { userList: docs, message:message });
+			res.render('users', { userList: docs});
 		});		
 	}
 	
