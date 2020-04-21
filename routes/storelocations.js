@@ -49,10 +49,32 @@ router.use(bodyParser.json()).use(
 	})
 );
 
-// Get all Logs sort descending order
+// Get all Stores sort descending order
 router.get('/', async (req, res) => {
 	try {
 		let storeList = await Store.find().sort({ name: 1 });
+		res.status(200).render('stores', { storeList });
+	} catch (err) {
+		logger.log('warn', `mongodb logs error ${err}`);
+	}
+});
+
+router.get('/search', async (req, res) => {
+	const search = req.query.search;
+	console.log(search);
+
+	console.log("in storelocations search");
+
+	// Store.find({ $text: {$search: `${search}` } }, (err, docs) => {
+	// 	if(err){
+	// 		console.log(err);
+	// 	}
+	// 	console.log(docs)
+
+	// })
+
+	try {
+		let storeList = await Store.find({ $text: {$search: `${search}` } }).sort({ name: 1 });
 		res.status(200).render('stores', { storeList });
 	} catch (err) {
 		logger.log('warn', `mongodb logs error ${err}`);

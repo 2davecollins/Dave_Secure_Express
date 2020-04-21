@@ -84,6 +84,20 @@ router.get('/add_location', ensureAuthenticated, (req, res) =>
 		user: req.user,
 	})
 );
+router.get('/search', (req,res) =>{
+	const search = req.query.search;
+	console.log(search);
+
+	console.log("in search");
+
+	Store.find({ $text: {$search: `${search}` } }, (err, docs) => {
+		if(err){
+			console.log(err);
+		}
+		console.log(docs)
+
+	})
+})
 router.get('/show_stores', async (req, res) => {
 	try {
 		const storeList = await getStores();

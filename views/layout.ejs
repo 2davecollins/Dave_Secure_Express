@@ -39,10 +39,16 @@
                 <% } %>             
             </div>
             <div class="navbar-nav ml-auto">
-              <form class="form-inline">          
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">               
-                <button class="btn btn-secondary my-2 my-sm-0 " disabled type="submit">Search</button>                      
-              </form>  
+              
+              <% if(!loginstate){ %>                  
+                <% } else{ %>                   
+                  <form class="form-inline" action="/storelocation/search" method="get" >          
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" name="search" aria-label="Search">               
+                    <button class="btn btn-primary my-2 my-sm-0 " type="submit">Search</button>                      
+                  </form> 
+              <% } %> 
+              
+              
 
               <% if(loginstate){ %>
                 &nbsp;<a href="/users/logout" class="btn btn-secondary"><i class="fas fa-sign-out-alt"></i>&nbsp;Logout</a>

@@ -12,29 +12,24 @@
         </div>
         <div class="row">
             <div class="col">
-                <!-- <div class="form-group">
+                <div class="form-group">
                     <label for="password">Enter password to make changes</label>    
                     <input id="password" class="form-control" name="road" value=""/>
-                </div> -->
+                </div>
             </div>
         </div>
-        <div class="row"> 
-            <div class="btn-group btn-group-toggle" data-toggle="buttons"></div>       
+        <div class="row">        
             <div class="col">
-                <label class="btn btn-secondary active">
-                    <input type="radio" name="role" id="option1"  
-                    <%if(userList.role != 'user'){%>
-                        <%="checked"%>
-                      <%}%>  > User
-                </label>                
+                <div class="form-group">
+                    <label for="password1">New Password</label>    
+                    <input id="password1" class="form-control" name="password1" value=""/>
+                </div>
             </div>         
-            <div class="col">                
-                <label class="btn btn-secondary active">
-                    <input type="radio" name="role" id="option1" 
-                    <%if(userList.role != 'user'){%>
-                        <%="checked"%>
-                      <%}%>  > Superuser
-                </label>               
+            <div class="col">
+                <div class="form-group">
+                    <label for="password2">Confirm New Password</label>    
+                    <input id="password2" class="form-control" name="password2" value=""/>
+                </div>
             </div>
         </div>
         
@@ -61,7 +56,7 @@
             </div>
             <div class="col">
                 <br>
-                <a class="btn btn-primary" href="/admin/user" role="button">Back</a>
+                <a class="btn btn-primary" href="/admin/user" role="button">Link</a>
             </div>
         </div><%= typeof msg != 'undefined' ? msg : ' ' %>
    

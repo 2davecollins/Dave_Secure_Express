@@ -28,7 +28,7 @@ const StoreSchema = new mongoose.Schema({
 	},
 	addedBy: {
 		type: String,
-		enum: ['user', 'admin', 'editor'],
+		enum: ['user', 'admin', 'superuser'],
 		default: 'user',
 	},
 	location: {
@@ -48,6 +48,8 @@ const StoreSchema = new mongoose.Schema({
 		country_code: String,
 	},
 });
+
+StoreSchema.index({"$**":"text"});
 
 StoreSchema.pre('save', async function(next) {
 	// get coords from address
