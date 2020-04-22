@@ -12,7 +12,7 @@ module.exports = function(passport) {
 				email: email,
 			}).then(user => {
 				if (!user) {
-					return done(null, false, { message: 'Invalid Username or Password' });
+					return done(null, false, { message: 'Invalid Credentials' });
 				}
 
 				// Match password
@@ -21,7 +21,7 @@ module.exports = function(passport) {
 					if (isMatch) {
 						return done(null, user);
 					} else {
-						return done(null, false, { message: 'Invalid Username or Password' });
+						return done(null, false, { message: 'Invalid Credentials' });
 					}
 				});
 			});

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const express = require('express'),
 	multer = require('multer'),
 	path = require('path'),
@@ -59,8 +60,7 @@ router.post('/dashboard', (req, res) => {
 				user: req.user,
 			});
 		} else {
-			console.log('in dash');
-			console.log(req.file);
+			
 			if (req.file == undefined) {
 				res.render('dashboard', {
 					msg: 'Error: No File Selected!',

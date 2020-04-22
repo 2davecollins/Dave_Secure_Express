@@ -11,8 +11,8 @@ const express = require('express'),
 // configure password requirements
 owasp.config({
 	allowPassphrases: false,
-	maxLength: 128,
-	minLength: 8,
+	maxLength: 64,
+	minLength: 10,
 	minPhraseLength: 20,
 	minOptionalTestsToPass: 4,
 });
@@ -70,8 +70,7 @@ router.post('/register', (req, res) => {
 			r.on('data', chunk => (hashes += chunk));
 			r.on('end', afterPwnedCheck);
 		})
-		.on('error', err => {
-			console.log(`Error  :  ${err}`);
+		.on('error', err => {			
 			logger.log('warn', `haveibeenpawned error ${err}`);
 		});
 
@@ -84,12 +83,11 @@ router.post('/register', (req, res) => {
 			};
 		});
 		let found = result.find(h => h.hash === hashedPassword);
-		if (found) {
-			console.log(`Found ${found.count} matched Password should not be used`);
+		if (found) {			
 			logger.log('warn', `Found ${found.count} matched Password ${password} it should not be used`);
 			errors.push({ msg: `Password compromised ${found.count} times` });
 		} else {
-			console.log('Good to Go');
+			
 		}
 		if (!name || !email || !password || !password2) {
 			errors.push({ msg: 'Please enter all fields' });
@@ -137,10 +135,7 @@ router.post('/register', (req, res) => {
 							newUser.password = hash;
 							newUser
 								.save()
-								.then(user => {
-									//console.log(`user : ${user}`);
-									//console.log('registered');
-									console.log(user.getSignedJWTToken());
+								.then(user => {									
 									logger.log('info', 'new user registered');
 									req.flash('success_msg', 'You are now registered and can log in');
 									res.redirect('/users/login');

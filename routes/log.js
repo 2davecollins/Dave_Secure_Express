@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const express = require('express'),
 	router = express.Router(),
 	logger = require('express-log-mongo'),

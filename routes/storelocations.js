@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const express = require('express'),
 	router = express.Router(),
 	bodyParser = require('body-parser'),
@@ -59,20 +60,11 @@ router.get('/', async (req, res) => {
 	}
 });
 
+//Text Search for any store name address
+
 router.get('/search', async (req, res) => {
 	const search = req.query.search;
-	console.log(search);
-
-	console.log("in storelocations search");
-
-	// Store.find({ $text: {$search: `${search}` } }, (err, docs) => {
-	// 	if(err){
-	// 		console.log(err);
-	// 	}
-	// 	console.log(docs)
-
-	// })
-
+	
 	try {
 		let storeList = await Store.find({ $text: {$search: `${search}` } }).sort({ name: 1 });
 		res.status(200).render('stores', { storeList });
@@ -95,8 +87,7 @@ router.get('/delete/:id', async (req, res, next) => {
 		logger.log('info', `${req.params.id} deleted`);
 	} catch (err) {
 		req.flash('error', err);
-		logger.log('warn', `logs delete error ${err}`);
-		console.log(err);
+		logger.log('warn', `logs delete error ${err}`);		
 	}
 	res.redirect('/storelocation');
 });
@@ -151,13 +142,7 @@ router.post('/save', upload, async (req, res, next) => {
 			image: image,
 			edit: false,
 		};
-		//TODO
-
-		// // Make sure user is store owner
-		// if (store.user.toString() !== req.user.id && req.user.role !== 'admin') {
-		// 	return next(new ErrorResponse(`User ${req.params.id} is not authorized to update this bootcamp`, 401));
-		// }
-
+		
 		const filter = { _id: req.body._id };
 		const store = await Store.findOneAndUpdate(filter, newData, {
 			new: true,

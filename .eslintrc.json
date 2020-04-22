@@ -28,6 +28,11 @@
         "semi": [
             1,
             "always"
+        ],
+       
+        "no-unused-vars": [
+            "error", { "args": "none" }
         ]
+        
     }
 }

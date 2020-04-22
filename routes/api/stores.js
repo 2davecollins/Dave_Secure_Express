@@ -1,5 +1,4 @@
-const express = require('express');
-
+/* eslint-disable no-unused-vars */
 const {
 	getStores,
 	getStore,
@@ -10,23 +9,22 @@ const {
 	StorePhotoUpload,
 } = require('../../Controllers/stores');
 
-const Store = require('../../models/Store');
-const router = express.Router();
-const errorResponse = require('../../utility/errorResponse');
-const { protect, authorize } = require('../../middleware/auth');
-const filterResults = require('../../middleware/filterResults');
-
+const express = require('express'),
+	Store = require('../../models/Store'),
+	router = express.Router(),
+	errorResponse = require('../../utility/errorResponse'),
+	{ protect, authorize } = require('../../middleware/auth'),
+	filterResults = require('../../middleware/filterResults');
 
 router
 	.route('/')
-	.get(filterResults(Store),getStores)
-	.post(protect,createStore);
+	.get(filterResults(Store), getStores)
+	.post(protect, createStore);
 
 router
 	.route('/:id')
 	.get(getStore)
-	.put(protect,updateStore)
-	.delete(protect,deleteStore);
-
+	.put(protect, updateStore)
+	.delete(protect, deleteStore);
 
 module.exports = router;

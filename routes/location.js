@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const express = require('express'),
 	multer = require('multer'),
 	path = require('path'),
@@ -5,7 +6,7 @@ const express = require('express'),
 	Store = require('../models/Store'),
 	logger = require('../config/winston');
 
-let loginstate = false;
+
 const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 
 const storage = multer.diskStorage({
@@ -84,20 +85,7 @@ router.get('/add_location', ensureAuthenticated, (req, res) =>
 		user: req.user,
 	})
 );
-router.get('/search', (req,res) =>{
-	const search = req.query.search;
-	console.log(search);
 
-	console.log("in search");
-
-	Store.find({ $text: {$search: `${search}` } }, (err, docs) => {
-		if(err){
-			console.log(err);
-		}
-		console.log(docs)
-
-	})
-})
 router.get('/show_stores', async (req, res) => {
 	try {
 		const storeList = await getStores();
@@ -144,5 +132,6 @@ router.post('/add_location', async (req, res) => {
 	// 	}
 	// });
 });
+
 
 module.exports = router;

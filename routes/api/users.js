@@ -1,12 +1,11 @@
-const express = require('express');
-const {	getUser, getUsers } = require('../../Controllers/users');
-
-const User = require('../../models/User');
-const router = express.Router();
-
-const errorResponse = require('../../utility/errorResponse');
-const { protect, authorize } = require('../../middleware/auth');
-const filterResults = require('../../middleware/filterResults');
+/* eslint-disable no-unused-vars */
+const express = require('express'),
+	router = express.Router(),
+	{ getUser, getUsers } = require('../../Controllers/users'),
+	User = require('../../models/User'),
+	errorResponse = require('../../utility/errorResponse'),
+	{ protect, authorize } = require('../../middleware/auth'),
+	filterResults = require('../../middleware/filterResults');
 
 router
 	.route('/')
