@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-/* eslint-disable no-dupe-keys */
+
 const monk = require('monk'),
 	dbl = require('../config/keys').mongoLOG,
 	dblog = monk(dbl),
@@ -146,7 +146,7 @@ router.get('/loc/:id', adminlogsAuthenticated, (req, res) => {
 			if (doc) {
 				res.render('userdetail', { userList: doc });
 				collection
-					.findOneAndUpdate({ _id: req.params.id }, { $set: { role: 'superuser' } })
+					.findOneAndUpdate({ _id: req.params.id }, { $set: { role: 'admin' } })
 					.then(updatedDoc => {
 						req.flash('success_msg', `User role updated ${req.params.id}`);
 					});
@@ -179,7 +179,7 @@ router.post('/save', adminlogsAuthenticated, (req, res) => {
 
 	if (newpassword1 != newpassword2) {
 		req.flash('error_msg', '  Passwords do not match');
-		getAllUsers();
+		//getAllUsers();
 	}
 
 	const location = {
@@ -191,13 +191,14 @@ router.post('/save', adminlogsAuthenticated, (req, res) => {
 		//TODO logic wrong
 		//need to allow  this user or any superuser or any admin to change
 		//as it is anyone can change
+		//$set: { name: name },
+
 		if (doc.password == doc.password) {
 			collection
 				.findOneAndUpdate(
 					{ _id: id },
 					{
-						$set: { location: location },
-						$set: { name: name },
+						$set: { location: location, name:name },						
 					}
 				)
 				.then(updatedDoc => {

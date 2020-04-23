@@ -1,6 +1,6 @@
+'use strict';
 //API Controller Methods for USERS
-const path = require('path'),
-	User = require('../models/User'),
+const User = require('../models/User'),
 	{ asyncHandler } = require('../utility/helper'),
 	{ ErrorResponse } = require('../utility/errorResponse');
 
@@ -11,7 +11,7 @@ const path = require('path'),
 exports.getUsers = asyncHandler(async (req, res, next) => {
 	await User.find({}, function(err, docs) {
 		if (err) {
-			return next(new ErrorResponse(`users not found`, 404));
+			return next(new ErrorResponse('users not found', 404));
 		}
 		let filteredData = [];
 		docs.forEach(function(doc) {
@@ -30,7 +30,6 @@ exports.getUsers = asyncHandler(async (req, res, next) => {
 // @access    Public
 
 exports.getUser = asyncHandler(async (req, res, next) => {
-	
 	await User.findOne({ _id: req.params.id }, (err, doc) => {
 		if (err) {
 			return next(new ErrorResponse(`user not found with id of ${req.params.id}`, 404));
@@ -49,10 +48,12 @@ exports.getUser = asyncHandler(async (req, res, next) => {
 // @access    Private
 
 exports.getUsersInRadius = asyncHandler(async (req, res, next) => {
-	const { coord, distance } = req.params;
-    console.log(req.parms);
-    
-    //TODO Need to integrate another resourse mapquest not working
+
+	//TODO Need to integrate another resourse mapquest not working
+
+	// const { distance } = req.params;
+	// console.log(req.parms);
+
 
 	// Get lat/lng from geocoder
 	// const loc = await geocoder.geocode(zipcode);
@@ -62,15 +63,15 @@ exports.getUsersInRadius = asyncHandler(async (req, res, next) => {
 	// Calc radius using radians
 	// Divide dist by radius of Earth
 	// Earth Radius = 3,963 mi / 6,378 km
-	const radius = distance / 6378;
+	// const radius = distance / 6378;
 
-	const users = await User.find({
-		location: { $geoWithin: { $centerSphere: [[lng, lat], radius] } },
-	});
+	// const users = await User.find({
+	// 	location: { $geoWithin: { $centerSphere: [[lng, lat], radius] } },
+	// });
 
-	res.status(200).json({
-		success: true,
-		count: users.length,
-		data: users,
-	});
+	// res.status(200).json({
+	// 	success: true,
+	// 	count: users.length,
+	// 	data: users,
+	// });
 });

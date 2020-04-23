@@ -1,3 +1,4 @@
+'use strict';
 const express = require('express'),
 	router = express.Router(),
 	bcrypt = require('bcryptjs'),
@@ -86,9 +87,7 @@ router.post('/register', (req, res) => {
 		if (found) {			
 			logger.log('warn', `Found ${found.count} matched Password ${password} it should not be used`);
 			errors.push({ msg: `Password compromised ${found.count} times` });
-		} else {
-			
-		}
+		} 
 		if (!name || !email || !password || !password2) {
 			errors.push({ msg: 'Please enter all fields' });
 		}

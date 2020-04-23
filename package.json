@@ -10,7 +10,7 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "lint": "./node_modules/.bin/eslint app.js routes/** config/local.js config/passport.js config/winston.js  app.js",
+    "lint": "./node_modules/.bin/eslint app.js routes/** Controllers/** middleware/** models/** config/local.js config/passport.js config/winston.js  app.js",
     "map": "./node_modules/.bin/browserify ./routes/map.js -o public/js/webmap.js"
   },
   "keywords": [],

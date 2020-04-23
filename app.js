@@ -1,3 +1,5 @@
+'use strict'; 
+
 const express = require('express'),
 
 	expressLayouts = require('express-ejs-layouts'),

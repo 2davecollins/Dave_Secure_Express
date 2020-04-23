@@ -1,3 +1,4 @@
+'use strict';
 const mongoose = require('mongoose'),
 	{ getAddressFromLatLng, getLatLonFromAddress } = require('../utility/geolocation'),
 	logger = require('../config/winston');
@@ -49,7 +50,7 @@ const StoreSchema = new mongoose.Schema({
 	},
 });
 
-StoreSchema.index({"$**":"text"});
+StoreSchema.index({'$**':'text'});
 
 StoreSchema.pre('save', async function(next) {
 	// get coords from address

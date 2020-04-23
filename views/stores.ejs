@@ -3,8 +3,7 @@
 
 <table class="table table-striped">
     <thead>
-        <tr>
-          <th scope="col">id</th>
+        <tr>         
           <th scope="col">name</th>
           <th scope="col">road</th>
           <th scope="col">county</th>
@@ -22,8 +21,7 @@
         <% } %>          
           
           <% for (var i = 0; i < storelength ; i++) { %>
-              <tr>
-                <th><%= typeof storeList != 'undefined' ? storeList[i]._id : '' %></th>              
+              <tr>                           
                 <th><%= typeof storeList != 'undefined' ? storeList[i].name: '' %></th>
                 <th><%= typeof storeList != 'undefined' ? storeList[i].location.road : '' %></th>            
                 <th><%= typeof storeList != 'undefined' ? storeList[i].location.county: '' %></th>

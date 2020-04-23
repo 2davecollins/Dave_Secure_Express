@@ -1,11 +1,10 @@
-<h1>List of Users</h1>
+<h1>User Detail</h1>
 <% include ./partials/messages %>
 
 <table class="table table-striped">
     <thead>
         <tr>
-          <th scope="col">Name</th>
-          <th scope="col">id</th>
+          <th scope="col">Name</th>         
           <th scope="col">Current Role</th>
           <th scope="col">Registered</th>          
           <th scope="col"></th>   
@@ -15,8 +14,7 @@
       <tbody>
         <% for (var i = 0; i < userList.length; i++) { %>
             <tr>
-              <th scope="row"><%= userList[i].name %></th>
-              <th><%= userList[i]._id %></th>
+              <th scope="row"><%= userList[i].name %></th>             
               <th><%= userList[i].role %></th>
               <th><%= new Date(userList[i].createdOn).toUTCString() %></th>
 

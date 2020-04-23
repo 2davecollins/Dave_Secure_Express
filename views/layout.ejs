@@ -43,7 +43,15 @@
               <% if(!loginstate){ %>                  
                 <% } else{ %>                   
                   <form class="form-inline" action="/storelocation/search" method="get" >          
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" name="search" aria-label="Search">               
+                    <input class="form-control mr-sm-2"
+                    type="search"
+                    placeholder="Search"
+                    name="search"
+                    autocapitalize="off"
+                    autocorrect="off"
+                    autocomplete="off"
+                    spellcheck="false"
+                    aria-label="Search">               
                     <button class="btn btn-primary my-2 my-sm-0 " type="submit">Search</button>                      
                   </form> 
               <% } %> 

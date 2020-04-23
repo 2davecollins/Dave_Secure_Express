@@ -1,11 +1,14 @@
+'use strict';
 const mongoose = require('mongoose'),
 	jwt = require('jsonwebtoken'),
+	bcrypt = require('bcryptjs'),
+	logger = require('../config/winston'),
 	{ getLatLngFromIp } = require('../utility/geolocation'),
 	JWT_SECRET = 'THEbestKEPTsecretINdublin',
-	JWT_EXPIRE= '1d',
+	JWT_EXPIRE = '1d',
 	MAX_LOGIN_ATTEMPTS = 2, //for testing
 	LOCK_TIME = 2 * 60 * 1000; //2min
-
+let reasons;
 const UserSchema = new mongoose.Schema({
 	name: {
 		type: String,
@@ -156,23 +159,22 @@ UserSchema.pre('save', async function(next) {
 			type: 'Point',
 			coordinates: coord,
 		};
-	} else {		
-		logger.log('warn', `data not available for ${this.ip}`);	
+	} else {
+		logger.log('warn', `data not available for ${this.ip}`);
 	}
 
 	next();
 });
 
-UserSchema.methods.getSignedJWTToken = function(){
-	return jwt.sign({id:this._id}, JWT_SECRET,{
-		expiresIn:JWT_EXPIRE
-	})
+UserSchema.methods.getSignedJWTToken = function() {
+	return jwt.sign({ id: this._id }, JWT_SECRET, {
+		expiresIn: JWT_EXPIRE,
+	});
 };
 
 UserSchema.methods.matchPassword = async function(enteredPassword) {
 	return await bcrypt.compare(enteredPassword, this.password);
-  };
-  
+};
 
 const User = mongoose.model('User', UserSchema);
 

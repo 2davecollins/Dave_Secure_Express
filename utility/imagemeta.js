@@ -1,3 +1,4 @@
+'use strict';
 const exiftool = require('node-exiftool'),
 	exiftoolBin = require('dist-exiftool'),
 	fs = require('fs'),

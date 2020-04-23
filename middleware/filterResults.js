@@ -1,4 +1,6 @@
-//Use with API
+'use strict';
+
+//USE with API
 const filterResults = model => async (req, res, next) => {
 	let query;
 

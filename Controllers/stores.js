@@ -1,3 +1,5 @@
+'use strict';
+
 //API Controller Methods for STORES
 const path = require('path'),
 	Store = require('../models/Store');
@@ -58,7 +60,7 @@ exports.updateStore = asyncHandler(async (req, res, next) => {
 		runValidators: true,
 	});
 
-	res.status(200).json({ success: true, data: bootcamp });
+	res.status(200).json({ success: true, data: store });
 });
 
 // @desc      Delete Store
@@ -79,8 +81,8 @@ exports.deleteStore = asyncHandler(async (req, res, next) => {
 // @route     GET /api/v1/stores/radius/:zipcode/:distance
 // @access    Private
 exports.getStoresInRadius = asyncHandler(async (req, res, next) => {
-	const { coord, distance } = req.params;
-	console.log(req.parms);
+	//const { distance } = req.params;
+	//console.log(req.parms);
 
 	//geocoder from mapquest not working need to implement another resourse
 
@@ -92,17 +94,17 @@ exports.getStoresInRadius = asyncHandler(async (req, res, next) => {
 	// Using radians
 	// Divide dist by radius of Earth
 	// Earth Radius = 3,963 mi / 6,378 km
-	const radius = distance / 6378;
+	// const radius = distance / 6378;
 
-	const stores = await Store.find({
-		location: { $geoWithin: { $centerSphere: [[lng, lat], radius] } },
-	});
+	// const stores = await Store.find({
+	// 	location: { $geoWithin: { $centerSphere: [[lng, lat], radius] } },
+	// });
 
-	res.status(200).json({
-		success: true,
-		count: stores.length,
-		data: stores,
-	});
+	// res.status(200).json({
+	// 	success: true,
+	// 	count: stores.length,
+	// 	data: stores,
+	// });
 });
 
 // @desc      Upload photo for Store
@@ -116,14 +118,14 @@ exports.storePhotoUpload = asyncHandler(async (req, res, next) => {
 	}
 	
 	if (!req.files) {
-		return next(new ErrorResponse(`Please upload a file`, 400));
+		return next(new ErrorResponse('Please upload a file', 400));
 	}
 
 	const file = req.files.file;
 
 	// Make sure the image is a photo
 	if (!file.mimetype.startsWith('image')) {
-		return next(new ErrorResponse(`Please upload an image file`, 400));
+		return next(new ErrorResponse('Please upload an image file', 400));
 	}
 
 	// Check filesize
@@ -137,7 +139,7 @@ exports.storePhotoUpload = asyncHandler(async (req, res, next) => {
 	file.mv(`${process.env.FILE_UPLOAD_PATH}/${file.name}`, async err => {
 		if (err) {
 			console.error(err);
-			return next(new ErrorResponse(`Problem with file upload`, 500));
+			return next(new ErrorResponse('Problem with file upload', 500));
 		}
 
 		await Store.findByIdAndUpdate(req.params.id, { photo: file.name });
