@@ -145,11 +145,11 @@ router.get('/loc/:id', adminlogsAuthenticated, (req, res) => {
 		collection.findOne({ _id: req.params.id }).then(doc => {
 			if (doc) {
 				res.render('userdetail', { userList: doc });
-				collection
-					.findOneAndUpdate({ _id: req.params.id }, { $set: { role: 'admin' } })
-					.then(updatedDoc => {
-						req.flash('success_msg', `User role updated ${req.params.id}`);
-					});
+				// collection
+				// 	.findOneAndUpdate({ _id: req.params.id }, { $set: { role: 'user' } })
+				// 	.then(updatedDoc => {
+				// 		req.flash('success_msg', `User role updated ${req.params.id}`);
+				// 	});
 			} else {
 				req.flash('error_msg', 'You Need to be Admin to carry out this task');
 			}
