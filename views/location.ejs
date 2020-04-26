@@ -6,11 +6,15 @@
 <form action="/location/new_location/" method="POST">
   <div class="form-group">
     <label for="storename">Store Name</label>    
-    <input id="storename1" class="form-control" name="name" />
+    <input id="storename1" placeholder="Store Name" 
+                            autocapitalize="off"
+                            autocorrect="off"
+                            autocomplete="off"
+                            spellcheck="false" class="form-control" name="name" required />
   </div>
   <div class="form-group">
     <label for="storeaddress">Address</label>    
-    <textarea id="storeaddress1" name="address" class="form-control" rows="4" cols="60"></textarea>
+    <textarea id="storeaddress1" name="address" required autocomplete="off" placeholder= "Road Area City"  class="form-control" rows="4" cols="60"></textarea>
   </div>
   <input type="hidden" name="addedBy" value="<%= user.role %>"/>
   <button type="submit" class="btn btn-primary ">Add Store</button>

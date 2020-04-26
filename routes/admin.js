@@ -201,16 +201,16 @@ router.post('/save', adminlogsAuthenticated, (req, res) => {
 						$set: { location: location, name:name },						
 					}
 				)
-				.then(updatedDoc => {
-					console.log(updatedDoc);
+				.then(updatedDoc => {					
 					req.flash('success_msg', `User role updated ${req.params.id}`);
 					getAllUsers();
+					
 				});
-		} else {
-			req.flash('error_msg', ' this task did not work');
+		} else {			
 			req.flash('error_msg', 'You Need to be Admin to carry out this task');
 		}
 	});
+	
 
 	function getAllUsers() {
 		collection.find({}, options, (err, docs) => {
@@ -221,6 +221,7 @@ router.post('/save', adminlogsAuthenticated, (req, res) => {
 			res.render('users', { userList: docs });
 		});
 	}
+	
 });
 
 module.exports = router;

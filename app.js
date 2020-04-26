@@ -18,9 +18,13 @@ const express = require('express'),
 	http = require('http'),
 	https = require('https'),
 	cors = require('cors');
+	
 
 //init app
 const app = express();
+
+//cfrs protection
+//app.use(csrfProtection());
 
 const options = require('./config/local.js');
 
@@ -49,6 +53,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use(express.urlencoded({ extended: true }));
+
 
 app.use(session({ secret, resave: true, saveUninitialized: true }));
 app.use(express.static('public'));
@@ -114,16 +119,18 @@ app.use(errorHandler);
 
 app.use('/*', (req, res) => {
 	logger.log('warn','page not found');
-	res.status(404).render('404', { title: 'Oooops sorry page not found . . . . ', image: '/images/error.jpeg' });
+	res.status(404).render('404', { title: 'Oooops sorry page not found . . . . ', image: '/images/error.jpeg', error:' something went wrong' });
 });
 
 // const PORT = process.env.PORT || 5000;
-// app.listen(PORT, () => {
-// 	console.log(`server startedon port ${PORT}`);
-// 	//logger.info(`Server started on port ${PORT}`);
-// });
+const PORT = 5000;
+
+app.listen(PORT, () => {
+	console.log(`server startedon port ${PORT}`);
+	//logger.info(`Server started on port ${PORT}`);
+});
 
 // needs to be run as sudo
 
-http.createServer(app).listen(80);
-https.createServer(options, app).listen(443);
+//http.createServer(app).listen(80);
+//https.createServer(options, app).listen(443);

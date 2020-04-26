@@ -1,5 +1,10 @@
 <h1><%= title %></h1>
 <br/>
+<div class="error">
+    {{#if error}}
+      <p>{{error}}</p>
+    {{/if}}
+  </div>
 
 <div width="100%" height="auto">
     <img src="<%= image %>" width="100%" >

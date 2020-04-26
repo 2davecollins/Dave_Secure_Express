@@ -33,8 +33,8 @@ const users = JSON.parse(
 const importData = async () => {
   console.log("Import  Data");
   try {
-    await Store.create(stores);   
-    await User.create(users);   
+    //await Store.create(stores);   
+    //await User.create(users);   
     console.log('Data Imported...'.green.inverse);
     process.exit();
   } catch (err) {
@@ -47,7 +47,7 @@ const deleteData = async () => {
   console.log("Delete database")
   try {
    // await Store.deleteMany();   
-    await User.deleteMany();  
+   // await User.deleteMany();  
     console.log('Data Destroyed...'.red.inverse);
     process.exit();
   } catch (err) {

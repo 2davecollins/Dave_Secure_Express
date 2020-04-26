@@ -7,6 +7,7 @@ const express = require('express'),
 	logger = require('../config/winston'),
 	{ ensureAuthenticated, forwardAuthenticated } = require('../config/auth'),
 	{ ErrorResponse, asyncHandler } = require('../utility/errorResponse'),
+	{ getData } =require('../utility/imagemeta'),
 	Store = require('../models/Store');
 
 //TODO add authentication move to multer to middleware
@@ -21,7 +22,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({
 	storage: storage,
-	limits: { fileSize: 1000000 },
+	limits: { fileSize: 5000000 },
 	fileFilter: function(req, file, cb) {
 		checkFileType(file, cb);
 	},
@@ -128,6 +129,11 @@ router.post('/save', upload, async (req, res, next) => {
 		if(req.file){
 			console.log(req.file.filename);
 			image = req.file.filename;
+			// console.log(new Date().getTime());
+			// const data = await getData(image);
+			// console.log(new Date().getTime());
+			// console.log(data)
+			// console.log(">>>>>>>>>>>>>>>>>>>>.")
 		}
 		let newData = {
 			location: {

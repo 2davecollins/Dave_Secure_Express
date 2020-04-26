@@ -6,7 +6,7 @@ const exiftool = require('node-exiftool'),
 
 const ep = new exiftool.ExiftoolProcess(exiftoolBin);
 
-exports.getData = image => {
+exports.getData = async image => {
 	const PHOTO_PATH = path.join(__dirname, '../public/uploads/' + image);
 	console.log(PHOTO_PATH);
 	const rs = fs.createReadStream(PHOTO_PATH);
@@ -20,6 +20,7 @@ exports.getData = image => {
 					//console.log(res.data[0])
 					if (res.data[0].GPSPosition) {
 						console.log(ParseDMS(res.data[0].GPSPosition));
+						console.log("---------------------------");						
 						return ParseDMS(res.data[0].GPSPosition);
 					} else {
 						console.log('No GPSPosition');
