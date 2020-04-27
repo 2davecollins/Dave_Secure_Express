@@ -123,14 +123,14 @@ app.use('/*', (req, res) => {
 });
 
 // const PORT = process.env.PORT || 5000;
-//const PORT = 5000;
+const PORT = 5000;
 
-// app.listen(PORT, () => {
-// 	console.log(`server startedon port ${PORT}`);
-// 	//logger.info(`Server started on port ${PORT}`);
-// });
+app.listen(PORT, () => {
+	console.log(`server startedon port ${PORT}`);
+	//logger.info(`Server started on port ${PORT}`);
+});
 
 // needs to be run as sudo
 
-http.createServer(app).listen(80);
-https.createServer(options, app).listen(443);
+// http.createServer(app).listen(80);
+// https.createServer(options, app).listen(443);
