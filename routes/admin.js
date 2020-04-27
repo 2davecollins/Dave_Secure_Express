@@ -101,23 +101,31 @@ router.get('/changerole', (req, res) => {
 
 router.post('/role', adminlogsAuthenticated, (req, res) => {
 	const data = req.body;
-	console.log(data);
-
-
+	
 	const collection = dblog.get('users');
 	const options = {
 		projection: {},
 		sort: { createdOn: -1 },
 	};
+
+	
+	if (req.user.role === 'admin') {		
+		collection.findOneAndUpdate({ _id: data.id }, { $set: { role: data.role } }).then(updatedDoc => {
+			
+			req.flash('success_msg', 'User role updated ');			
+			res.json({'success':true,'role':data.role});			
+		});
+	}else{
+				
+		res.json({'success':false,'role':data.role});
+		req.flash('error_msg', 'You Need to be Admin to carry out this task');
+	}
+
+
+
 	
 	
 
-	collection.findOneAndUpdate({ _id: data.id }, { $set: { role: data.role } }).then(updatedDoc => {
-		req.flash('success_msg', 'User role updated ');
-
-		res.json({'success':true,'role':data.role});		
-
-	});
 	
 
 	
