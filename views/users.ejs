@@ -6,7 +6,8 @@
         <tr>
           <th scope="col">Name</th>         
           <th scope="col">Current Role</th>
-          <th scope="col">Registered</th>          
+          <th scope="col">Registered</th> 
+          <th scope="col"></th>         
           <th scope="col"></th>   
         </tr>
       </thead>
@@ -17,10 +18,28 @@
               <th scope="row"><%= userList[i].name %></th>             
               <th><%= userList[i].role %></th>
               <th><%= new Date(userList[i].createdOn).toUTCString() %></th>
+              <th> 
+                
+                <% if(userList[i].role === 'admin'){ %>
+                  
+                   <% } else{ %>
+
+                    <div class="form-check">
+                      <label> <input type="radio" onclick="roleChange(this)" class="form-check-input" id="<%= userList[i]._id %>" name="<%= userList[i]._id %>" <%= userList[i].role === 'user' ? 'checked' : '' %> value="user">User </label>
+                    </div>
+                    
+                    <!-- Material checked disabled -->
+                    <div class="form-check">
+                      <label><input type="radio"  onclick="roleChange(this)" class="form-check-input" id="<%= userList[i]._id %>" name="<%= userList[i]._id %>"  <%= userList[i].role === 'user' ? '' : 'checked' %> value="superuser" >SuperUser</label>
+                    </div>
+                 
+                  <% } %>
+              </th>
 
               <th>
                  <div style="float:left">
                   <a class="btn btn-raised btn-danger" href="/admin/loc/<%= userList[i]._id %>">Change Details</a></td>                                             
+                  
                   <a class="btn btn-raised btn-danger" href="/admin/delete/<%= userList[i]._id %>">Delete</a></td>
                  </div>
                </th>
@@ -30,11 +49,33 @@
  </table>
 
 <script>
-  function rolechange(val){
-    alert('Role changed to '+val)
-    fetch(`/admin/role?role=${val}`)
-    .then(res => res.json())
-    .then(json => console.log(json));
+    function roleChange(val){
+    
+      const id = val.id;
+      const role = val.value;
+
+      const data = {
+        id,
+        role
+      }
+
+    
+     // alert('Role changed to '+val)
+      fetch('/admin/role/', {
+        method: 'POST',
+        headers: {
+          'Content-Type':'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data)
+      })
+      .catch( (err)=>{
+        console.log(err)
+
+      });
 
   }
 

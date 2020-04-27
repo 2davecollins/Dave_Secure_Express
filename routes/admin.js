@@ -99,40 +99,28 @@ router.get('/changerole', (req, res) => {
 	// TODO console.log('in change role');
 });
 
-router.get('/role/:id', adminlogsAuthenticated, (req, res) => {
-	const role = req.params.role;
-	console.log(role);
+router.post('/role', adminlogsAuthenticated, (req, res) => {
+	const data = req.body;
+	console.log(data);
 
-	//TODO not working correctly failed test
 
-	// const collection = dblog.get('users');
-	// const options = {
-	// 	projection: {},
-	// 	sort: { createdOn: -1 },
-	// };
+	const collection = dblog.get('users');
+	const options = {
+		projection: {},
+		sort: { createdOn: -1 },
+	};
+	
+	
 
-	// if (req.params.id) {
-	// 	collection.findOne({ _id: req.params.id }).then(doc => {
-	// 		if (doc.role == 'admin') {
-	// 			collection
-	// 				.findOneAndUpdate({ _id: req.params.id }, { $set: { role: 'superuser' } })
-	// 				.then(updatedDoc => {
-	// 					req.flash('success_msg', `User role updated ${req.params.id}`);
-	// 				});
-	// 		} else {
-	// 			req.flash('error_msg', 'You Need to be Admin to carry out this task');
-	// 		}
-	// 	});
-	// }
-	// collection.find({}, options, (err, docs) => {
-	// 	if (err) {
-	// 		console.log(err);
-	// 		logger.log('warn', `user display error ${err}`);
-	// 	}
-	// 	//console.log(docs);
-	// 	//logger.log('info', `Usersbeing viewed`);
-	// 	res.render('users', { userList: docs });
-	// });
+	collection.findOneAndUpdate({ _id: data.id }, { $set: { role: data.role } }).then(updatedDoc => {
+		req.flash('success_msg', 'User role updated ');
+
+		res.json({'success':true,'role':data.role});		
+
+	});
+	
+
+	
 });
 router.get('/loc/:id', adminlogsAuthenticated, (req, res) => {
 	const collection = dblog.get('users');
@@ -146,7 +134,7 @@ router.get('/loc/:id', adminlogsAuthenticated, (req, res) => {
 			if (doc) {
 				res.render('userdetail', { userList: doc });
 				// collection
-				// 	.findOneAndUpdate({ _id: req.params.id }, { $set: { role: 'user' } })
+				// 	.findOneAndUpdate({ _id: req.params.id }, { $set: { role: 'admin' } })
 				// 	.then(updatedDoc => {
 				// 		req.flash('success_msg', `User role updated ${req.params.id}`);
 				// 	});
@@ -198,19 +186,18 @@ router.post('/save', adminlogsAuthenticated, (req, res) => {
 				.findOneAndUpdate(
 					{ _id: id },
 					{
-						$set: { location: location, name:name },						
+						$set: { location: location, name: name },
 					}
 				)
-				.then(updatedDoc => {					
-					req.flash('success_msg', `User role updated ${req.params.id}`);
+				.then(updatedDoc => {
+					console.log(updatedDoc);
+					req.flash('success_msg', `User  updated ${req.params.id}`);
 					getAllUsers();
-					
 				});
-		} else {			
+		} else {
 			req.flash('error_msg', 'You Need to be Admin to carry out this task');
 		}
 	});
-	
 
 	function getAllUsers() {
 		collection.find({}, options, (err, docs) => {
@@ -221,7 +208,6 @@ router.post('/save', adminlogsAuthenticated, (req, res) => {
 			res.render('users', { userList: docs });
 		});
 	}
-	
 });
 
 module.exports = router;
